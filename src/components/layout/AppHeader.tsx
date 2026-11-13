@@ -1,0 +1,128 @@
+"use client";
+
+import React from "react";
+import Image from "next/image";
+import {
+  Menu,
+  RotateCw,
+  Calendar,
+  Globe,
+  ChevronDown,
+  Info,
+} from "lucide-react";
+import { ReportingPeriod } from "@/features/dashboard/types";
+import { REPORTING_PERIOD_OPTIONS } from "@/data/mocks/dashboard.mock";
+
+interface AppHeaderProps {
+  onMobileMenuOpen: () => void;
+  period: ReportingPeriod;
+  onPeriodChange: (period: ReportingPeriod) => void;
+  lastUpdated?: string;
+  isRefreshing: boolean;
+  onRefresh: () => void;
+}
+
+export function AppHeader({
+  onMobileMenuOpen,
+  period,
+  onPeriodChange,
+  lastUpdated,
+  isRefreshing,
+  onRefresh,
+}: AppHeaderProps) {
+  return (
+    <header className="sticky top-0 z-30 w-full bg-surface/90 backdrop-blur-md border-b border-border shadow-subtle transition-all">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between px-4 sm:px-6 py-3.5 gap-3">
+        {/* Left Section: Mobile Toggle & Brand / Title / Breadcrumb */}
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            onClick={onMobileMenuOpen}
+            className="p-2 -ml-1 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-100 lg:hidden focus:outline-none focus:ring-2 focus:ring-primary"
+            aria-label="Menyuni ochish"
+          >
+            <Menu className="w-5 h-5" />
+          </button>
+
+          <div className="flex items-center gap-3">
+            <div className="hidden sm:flex items-center">
+              <div className="relative w-8 h-8 mr-2.5">
+                <Image
+                  src="/assets/logo-oz-dark-text.svg"
+                  alt="QarDU Logotipi"
+                  fill
+                  className="object-contain"
+                  priority
+                />
+              </div>
+            </div>
+
+            <div>
+              {/* Breadcrumbs */}
+              <nav aria-label="Breadcrumb" className="flex items-center gap-1.5 text-xs text-slate-500 font-medium">
+                <span className="hover:text-slate-700">QarDU Analytics</span>
+                <span className="text-slate-300">/</span>
+                <span className="text-primary font-semibold">Bosh sahifa</span>
+              </nav>
+
+              {/* Title */}
+              <h1 className="text-lg sm:text-xl font-bold text-slate-900 tracking-tight flex items-center gap-2">
+                Universitet statistikasi
+                <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                  Ochiq portal
+                </span>
+              </h1>
+            </div>
+          </div>
+        </div>
+
+        {/* Right Section: Controls, Period Selector, Refresh, Language */}
+        <div className="flex items-center flex-wrap gap-2.5 self-end sm:self-center">
+          {/* Last updated indicator (Desktop) */}
+          {lastUpdated && (
+            <div className="hidden xl:flex items-center text-xs text-slate-500 mr-1" title="Ma'lumotlar oxirgi marta yangilangan vaqti">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 inline-block mr-1.5 animate-pulse" />
+              <span>{lastUpdated}</span>
+            </div>
+          )}
+
+          {/* Period Selector */}
+          <div className="relative inline-flex items-center">
+            <Calendar className="w-4 h-4 text-slate-500 absolute left-3 pointer-events-none" />
+            <select
+              value={period}
+              onChange={(e) => onPeriodChange(e.target.value as ReportingPeriod)}
+              className="appearance-none pl-9 pr-8 py-1.5 bg-white border border-slate-200 rounded-xl text-xs sm:text-sm font-semibold text-slate-800 hover:border-slate-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary shadow-sm cursor-pointer transition-colors"
+              aria-label="Hisobot davrini tanlash"
+            >
+              {REPORTING_PERIOD_OPTIONS.map((opt) => (
+                <option key={opt.id} value={opt.id}>
+                  {opt.label}
+                </option>
+              ))}
+            </select>
+            <ChevronDown className="w-3.5 h-3.5 text-slate-500 absolute right-2.5 pointer-events-none" />
+          </div>
+
+          {/* Refresh Button */}
+          <button
+            type="button"
+            onClick={onRefresh}
+            disabled={isRefreshing}
+            className="flex items-center justify-center p-2 rounded-xl border border-slate-200 bg-white text-slate-700 hover:text-primary hover:border-slate-300 shadow-sm active:scale-95 transition-all focus:outline-none focus:ring-2 focus:ring-primary disabled:opacity-50"
+            title="Ma'lumotlarni yangilash"
+            aria-label="Ma'lumotlarni yangilash"
+          >
+            <RotateCw className={`w-4 h-4 ${isRefreshing ? "animate-spin text-primary" : ""}`} />
+          </button>
+
+          {/* Language Selector */}
+          <div className="flex items-center px-2.5 py-1.5 rounded-xl border border-slate-200 bg-white shadow-sm text-xs font-semibold text-slate-700 gap-1.5 select-none">
+            <Globe className="w-3.5 h-3.5 text-slate-500" />
+            <span>UZ</span>
+          </div>
+        </div>
+      </div>
+    </header>
+  );
+}
