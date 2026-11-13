@@ -8,7 +8,8 @@ import {
   Calendar,
   Globe,
   ChevronDown,
-  Info,
+  Printer,
+  Sparkles,
 } from "lucide-react";
 import { ReportingPeriod } from "@/features/dashboard/types";
 import { REPORTING_PERIOD_OPTIONS } from "@/data/mocks/dashboard.mock";
@@ -30,8 +31,30 @@ export function AppHeader({
   isRefreshing,
   onRefresh,
 }: AppHeaderProps) {
+  const handlePrint = () => {
+    if (typeof window !== "undefined") {
+      window.print();
+    }
+  };
+
   return (
-    <header className="sticky top-0 z-30 w-full bg-surface/90 backdrop-blur-md border-b border-border shadow-subtle transition-all">
+    <header className="sticky top-0 z-30 w-full bg-surface/95 backdrop-blur-md border-b border-border shadow-subtle transition-all">
+      {/* Top micro banner for university credentials */}
+      <div className="hidden sm:flex items-center justify-between px-4 sm:px-6 py-1 bg-slate-50/80 border-b border-slate-100 text-[11px] text-slate-500 font-medium">
+        <div className="flex items-center gap-2">
+          <span className="w-1.5 h-1.5 rounded-full bg-primary" />
+          <span>Qarshi davlat universiteti rasmiy statistik-analitik portali</span>
+        </div>
+        <div className="flex items-center gap-3">
+          <span>Oliy ta&apos;lim, fan va innovatsiyalar vazirligi</span>
+          <span className="text-slate-300">•</span>
+          <span className="text-emerald-600 font-semibold flex items-center gap-1">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+            Onlayn monitoring
+          </span>
+        </div>
+      </div>
+
       <div className="flex flex-col sm:flex-row sm:items-center justify-between px-4 sm:px-6 py-3.5 gap-3">
         {/* Left Section: Mobile Toggle & Brand / Title / Breadcrumb */}
         <div className="flex items-center gap-3">
@@ -46,7 +69,7 @@ export function AppHeader({
 
           <div className="flex items-center gap-3">
             <div className="hidden sm:flex items-center">
-              <div className="relative w-8 h-8 mr-2.5">
+              <div className="relative w-9 h-9 mr-2">
                 <Image
                   src="/assets/logo-oz-dark-text.svg"
                   alt="QarDU Logotipi"
@@ -76,11 +99,14 @@ export function AppHeader({
           </div>
         </div>
 
-        {/* Right Section: Controls, Period Selector, Refresh, Language */}
+        {/* Right Section: Controls, Period Selector, Print, Refresh, Language */}
         <div className="flex items-center flex-wrap gap-2.5 self-end sm:self-center">
           {/* Last updated indicator (Desktop) */}
           {lastUpdated && (
-            <div className="hidden xl:flex items-center text-xs text-slate-500 mr-1" title="Ma'lumotlar oxirgi marta yangilangan vaqti">
+            <div
+              className="hidden xl:flex items-center text-xs text-slate-500 mr-1 py-1 px-2.5 rounded-lg bg-slate-50 border border-slate-100"
+              title="Ma'lumotlar oxirgi marta yangilangan vaqti"
+            >
               <span className="w-2 h-2 rounded-full bg-emerald-500 inline-block mr-1.5 animate-pulse" />
               <span>{lastUpdated}</span>
             </div>
@@ -104,12 +130,23 @@ export function AppHeader({
             <ChevronDown className="w-3.5 h-3.5 text-slate-500 absolute right-2.5 pointer-events-none" />
           </div>
 
+          {/* Print / Export Report Button */}
+          <button
+            type="button"
+            onClick={handlePrint}
+            className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-slate-200 bg-white text-xs font-semibold text-slate-700 hover:text-slate-900 hover:bg-slate-50 shadow-sm transition-colors focus:outline-none focus:ring-2 focus:ring-primary no-print"
+            title="Hisobotni chop etish yoki PDF sifatida saqlash"
+          >
+            <Printer className="w-3.5 h-3.5 text-slate-500" />
+            <span>Chop etish</span>
+          </button>
+
           {/* Refresh Button */}
           <button
             type="button"
             onClick={onRefresh}
             disabled={isRefreshing}
-            className="flex items-center justify-center p-2 rounded-xl border border-slate-200 bg-white text-slate-700 hover:text-primary hover:border-slate-300 shadow-sm active:scale-95 transition-all focus:outline-none focus:ring-2 focus:ring-primary disabled:opacity-50"
+            className="flex items-center justify-center p-2 rounded-xl border border-slate-200 bg-white text-slate-700 hover:text-primary hover:border-slate-300 shadow-sm active:scale-95 transition-all focus:outline-none focus:ring-2 focus:ring-primary disabled:opacity-50 no-print"
             title="Ma'lumotlarni yangilash"
             aria-label="Ma'lumotlarni yangilash"
           >

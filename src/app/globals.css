@@ -55,3 +55,28 @@
     transform: translateY(0) scale(1);
   }
 }
+
+/* Print optimization for PDF and executive reports */
+@media print {
+  aside,
+  header button,
+  footer,
+  .no-print {
+    display: none !important;
+  }
+  body {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+  }
+  main {
+    margin: 0 !important;
+    padding: 0 !important;
+    max-width: 100% !important;
+  }
+  .card,
+  .rounded-2xl {
+    box-shadow: none !important;
+    border: 1px solid #e2e8f0 !important;
+    break-inside: avoid;
+  }
+}

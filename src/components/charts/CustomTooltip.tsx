@@ -86,6 +86,14 @@ export function CustomTooltip({
               </span>
             </div>
           )}
+          {itemData.capacity && itemData.occupancy && (
+            <div className="pt-1 mt-1 border-t border-slate-100 flex items-center justify-between text-slate-500">
+              <span>Bandlik darajasi:</span>
+              <span className="font-semibold text-emerald-600">
+                {((itemData.occupancy / itemData.capacity) * 100).toFixed(1)}%
+              </span>
+            </div>
+          )}
         </div>
       ) : (
         /* Single Series payload */

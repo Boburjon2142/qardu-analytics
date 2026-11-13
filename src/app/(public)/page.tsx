@@ -98,6 +98,12 @@ export default function DashboardPage() {
               icon={GraduationCap}
               accentColor="blue"
               badgeText="Faol talabalar"
+              trendText="+7.4% o'sish"
+              subMetrics={[
+                { label: "Bakalavr", value: "22 200" },
+                { label: "Magistr", value: "2 050" },
+                { label: "Doktorant", value: "250" },
+              ]}
               isLoading={isLoading}
             />
             <StatCard
@@ -107,6 +113,12 @@ export default function DashboardPage() {
               icon={Building2}
               accentColor="green"
               badgeText="12 ta fakultet"
+              trendText="100% akkreditatsiya"
+              subMetrics={[
+                { label: "Kafedralar", value: "54 ta" },
+                { label: "Yo'nalishlar", value: "68 ta" },
+                { label: "Mutaxassislik", value: "32 ta" },
+              ]}
               isLoading={isLoading}
             />
             <StatCard
@@ -116,6 +128,12 @@ export default function DashboardPage() {
               icon={Users}
               accentColor="indigo"
               badgeText="Asosiy shtat"
+              trendText="Ilmiy salohiyat: 44%"
+              subMetrics={[
+                { label: "DSc (Fan doktori)", value: "85 nafar" },
+                { label: "PhD (Falsafa doktori)", value: "465 nafar" },
+                { label: "Professor/Dotsent", value: "420 nafar" },
+              ]}
               isLoading={isLoading}
             />
           </div>

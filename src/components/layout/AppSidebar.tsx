@@ -12,6 +12,8 @@ import {
   ChevronLeft,
   ChevronRight,
   X,
+  ExternalLink,
+  HelpCircle,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -22,6 +24,7 @@ export interface NavItem {
   icon: React.ComponentType<{ className?: string }>;
   isActive?: boolean;
   badge?: string;
+  shortcut?: string;
 }
 
 const NAV_ITEMS: NavItem[] = [
@@ -31,6 +34,7 @@ const NAV_ITEMS: NavItem[] = [
     href: "/",
     icon: LayoutDashboard,
     isActive: true,
+    shortcut: "1",
   },
   {
     id: "students",
@@ -38,6 +42,7 @@ const NAV_ITEMS: NavItem[] = [
     href: "#",
     icon: GraduationCap,
     badge: "Tez kunda",
+    shortcut: "2",
   },
   {
     id: "faculties",
@@ -45,6 +50,7 @@ const NAV_ITEMS: NavItem[] = [
     href: "#",
     icon: Building2,
     badge: "Tez kunda",
+    shortcut: "3",
   },
   {
     id: "teachers",
@@ -52,6 +58,7 @@ const NAV_ITEMS: NavItem[] = [
     href: "#",
     icon: Users,
     badge: "Tez kunda",
+    shortcut: "4",
   },
   {
     id: "research",
@@ -59,6 +66,7 @@ const NAV_ITEMS: NavItem[] = [
     href: "#",
     icon: FlaskConical,
     badge: "Tez kunda",
+    shortcut: "5",
   },
 ];
 
@@ -68,7 +76,6 @@ interface AppSidebarProps {
 }
 
 export function AppSidebar({ mobileOpen, onMobileClose }: AppSidebarProps) {
-  // Collapsed by default as per requirement: "Chapda dastlab collapsed (icon-only) holatda turadigan sidebar yarat"
   const [isCollapsed, setIsCollapsed] = useState<boolean>(true);
   const [mounted, setMounted] = useState<boolean>(false);
 
@@ -122,10 +129,10 @@ export function AppSidebar({ mobileOpen, onMobileClose }: AppSidebarProps) {
         )}
       >
         {/* Brand Header */}
-        <div className="flex items-center justify-between h-[70px] px-3 border-b border-border">
+        <div className="flex items-center justify-between h-[70px] px-3.5 border-b border-border">
           <div className="flex items-center gap-3 overflow-hidden">
-            <div className="relative flex items-center justify-center w-10 h-10 rounded-xl bg-primary/10 text-primary font-bold text-lg shrink-0">
-              <span className="text-primary font-extrabold tracking-tight">Q</span>
+            <div className="relative flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600 to-indigo-700 text-white font-bold text-lg shrink-0 shadow-md shadow-blue-500/20">
+              <span className="font-extrabold tracking-tight text-white">Q</span>
             </div>
             {(!isCollapsed || mobileOpen) && (
               <div className="flex flex-col min-w-0">
@@ -211,8 +218,23 @@ export function AppSidebar({ mobileOpen, onMobileClose }: AppSidebarProps) {
           })}
         </nav>
 
-        {/* Footer / Toggle Section */}
-        <div className="p-2 border-t border-border">
+        {/* Footer / Toggle & University Links */}
+        <div className="p-2 border-t border-border flex flex-col gap-1">
+          {(!isCollapsed || mobileOpen) && (
+            <div className="px-2 py-2 mb-1 rounded-xl bg-slate-50 text-[11px] text-slate-500 flex flex-col gap-1">
+              <span className="font-semibold text-slate-700">QarDU Axborot xizmati</span>
+              <a
+                href="https://qardu.uz"
+                target="_blank"
+                rel="noreferrer"
+                className="text-primary hover:underline flex items-center gap-1 font-medium"
+              >
+                <span>qardu.uz</span>
+                <ExternalLink className="w-3 h-3" />
+              </a>
+            </div>
+          )}
+
           <button
             type="button"
             onClick={toggleCollapse}
