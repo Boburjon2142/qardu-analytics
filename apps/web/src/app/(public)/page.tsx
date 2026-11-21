@@ -1,11 +1,7 @@
 ﻿"use client";
 
-import React from "react";
-import {
-  GraduationCap,
-  Building2,
-  Users,
-} from "lucide-react";
+import React, { useState } from "react";
+import dynamic from "next/dynamic";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { StatCard } from "@/components/dashboard/StatCard";
 import { ChartCard } from "@/components/dashboard/ChartCard";
@@ -17,6 +13,15 @@ import { BuildingCapacityChart } from "@/components/charts/BuildingCapacityChart
 import { StackedBarChart } from "@/components/charts/StackedBarChart";
 import { useDashboardData } from "@/features/dashboard/hooks/useDashboardData";
 import { formatPercentage } from "@/lib/formatters";
+import { KPI_CARDS, buildDormSupplySegments } from "@/features/dashboard/kpiCards";
+import { REPORTING_PERIOD_OPTIONS } from "@/data/mocks/dashboard.mock";
+import { enterFullscreen } from "@/components/presentation/fullscreen";
+
+// Loaded on demand: the slideshow is only needed after the button is pressed.
+const PresentationMode = dynamic(
+  () => import("@/components/presentation/PresentationMode").then((m) => m.PresentationMode),
+  { ssr: false }
+);
 
 export default function DashboardPage() {
   const {
@@ -29,33 +34,20 @@ export default function DashboardPage() {
     isRefetching,
   } = useDashboardData("2024-2025");
 
+  const [presenting, setPresenting] = useState(false);
+  const handlePresent = () => {
+    void enterFullscreen(); // must start inside the click (user gesture)
+    setPresenting(true);
+  };
+  const periodLabel = REPORTING_PERIOD_OPTIONS.find((o) => o.id === period)?.label ?? period;
+
   // Safe fallback data while loading or in error state
   const kpi = data?.kpi;
   const students = data?.students;
   const infrastructure = data?.infrastructure;
   const teachersAndResearch = data?.teachersAndResearch;
 
-  // Center display for dormitory supply
-  const dormSupplyData = students?.dormitorySupply
-    ? [
-        {
-          id: "provided",
-          name: "Ta'minlangan",
-          count: students.dormitorySupply.providedCount,
-          percentage: students.dormitorySupply.providedRate,
-          color: "#539883",
-        },
-        {
-          id: "unprovided",
-          name: "Ta'minlanmagan",
-          count: students.dormitorySupply.unprovidedCount,
-          percentage: Number(
-            (100 - students.dormitorySupply.providedRate).toFixed(1)
-          ),
-          color: "#B95E6D",
-        },
-      ]
-    : [];
+  const dormSupplyData = buildDormSupplySegments(students?.dormitorySupply);
 
   return (
     <DashboardLayout
@@ -64,55 +56,32 @@ export default function DashboardPage() {
       lastUpdated={kpi?.lastUpdated}
       isRefreshing={isRefetching}
       onRefresh={refetch}
+      onPresent={handlePresent}
+      presentDisabled={!data}
     >
       <div className="space-y-4 pb-6">
         {/* 7.1. KPI CARDS */}
         <section aria-label="Asosiy ko'rsatkichlar">
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3 sm:gap-4">
-            <StatCard
-              title="Talabalar"
-              unit="nafar"
-              value={kpi?.totalStudents ?? 0}
-              icon={GraduationCap}
-              accentColor="blue"
-              trendText="+7.4% o'sish"
-              subMetrics={[
-                { label: "Bakalavr", value: "22 200" },
-                { label: "Magistr", value: "2 050" },
-                { label: "Doktorant", value: "250" },
-              ]}
-              isLoading={isLoading}
-            />
-            <StatCard
-              title="Fakultetlar"
-              unit="ta"
-              value={kpi?.totalFaculties ?? 0}
-              icon={Building2}
-              accentColor="green"
-              trendText="100% akkreditatsiya"
-              subMetrics={[
-                { label: "Kafedralar", value: "54 ta" },
-                { label: "Yo'nalishlar", value: "68 ta" },
-                { label: "Mutaxassislik", value: "32 ta" },
-              ]}
-              isLoading={isLoading}
-            />
-            <div className="md:col-span-2 xl:col-span-1 [&>*]:h-full">
-              <StatCard
-                title="O'qituvchilar"
-                unit="nafar"
-                value={kpi?.totalTeachers ?? 0}
-                icon={Users}
-                accentColor="indigo"
-                trendText="Ilmiy salohiyat: 44%"
-                subMetrics={[
-                  { label: "Fan doktori", value: "85 nafar" },
-                  { label: "Falsafa doktori", value: "465 nafar" },
-                  { label: "Prof. / dots.", value: "420 nafar" },
-                ]}
-                isLoading={isLoading}
-              />
-            </div>
+            {KPI_CARDS.map((card, index) => (
+              <div
+                key={card.id}
+                className={
+                  index === 2 ? "md:col-span-2 xl:col-span-1 [&>*]:h-full" : "[&>*]:h-full"
+                }
+              >
+                <StatCard
+                  title={card.title}
+                  unit={card.unit}
+                  value={kpi?.[card.valueKey] ?? 0}
+                  icon={card.icon}
+                  accentColor={card.accent}
+                  trendText={card.trendText}
+                  subMetrics={card.subMetrics}
+                  isLoading={isLoading}
+                />
+              </div>
+            ))}
           </div>
         </section>
 
@@ -123,6 +92,7 @@ export default function DashboardPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
             {/* Chart 1: Talabalar fakultetlar kesimida */}
             <ChartCard
+              accent="blue"
               className="lg:col-span-2"
               title="Talabalar soni fakultetlar kesimida"
               unit="nafar"
@@ -142,6 +112,7 @@ export default function DashboardPage() {
 
             {/* Chart 2: Talabalar ta'lim darajasi kesimida */}
             <ChartCard
+              accent="blue"
               title="Talabalar soni ta'lim darajasi kesimida"
               unit="nafar"
               isLoading={isLoading}
@@ -160,6 +131,7 @@ export default function DashboardPage() {
 
             {/* Chart 3: Yotoqxona bilan ta'minlanganlik */}
             <ChartCard
+              accent="blue"
               title="Yotoqxona bilan ta'minlanganlik"
               unit="nafar"
               isLoading={isLoading}
@@ -185,6 +157,7 @@ export default function DashboardPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
             {/* Chart 4: Ta'lim turi kesimida */}
             <ChartCard
+              accent="blue"
               title="Ta'lim turi kesimida"
               unit="nafar"
               isLoading={isLoading}
@@ -201,6 +174,7 @@ export default function DashboardPage() {
 
             {/* Chart 5: Kurslar kesimida */}
             <ChartCard
+              accent="blue"
               title="Kurslar kesimida"
               unit="nafar"
               isLoading={isLoading}
@@ -224,6 +198,7 @@ export default function DashboardPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
             {/* Chart 6: Universitet binolari va sig'imi */}
             <ChartCard
+              accent="green"
               title="Universitet binolari va sig'imi"
               unit="o'rin"
               isLoading={isLoading}
@@ -239,6 +214,7 @@ export default function DashboardPage() {
 
             {/* Chart 7: Yotoqxona sig'imi */}
             <ChartCard
+              accent="green"
               title="Yotoqxona sig'imi (Band va bo'sh o'rinlar)"
               unit="o'rin"
               isLoading={isLoading}
@@ -261,6 +237,7 @@ export default function DashboardPage() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
             {/* Chart 8: Ilmiy unvonlar */}
             <ChartCard
+              accent="indigo"
               title="Ilmiy unvonlar"
               unit="nafar"
               isLoading={isLoading}
@@ -278,6 +255,7 @@ export default function DashboardPage() {
 
             {/* Chart 9: Ilmiy darajalar */}
             <ChartCard
+              accent="indigo"
               title="Ilmiy darajalar"
               unit="nafar"
               isLoading={isLoading}
@@ -295,6 +273,7 @@ export default function DashboardPage() {
 
             {/* Chart 10: Ilmiy nashrlar */}
             <ChartCard
+              accent="indigo"
               title="Ilmiy nashrlar"
               unit="ta"
               isLoading={isLoading}
@@ -325,6 +304,7 @@ export default function DashboardPage() {
           title="O'qituvchilar fakultetlar kesimida"
         >
           <ChartCard
+              accent="indigo"
             title="O'qituvchilar soni fakultetlar bo'yicha"
             unit="nafar"
             isLoading={isLoading}
@@ -349,6 +329,13 @@ export default function DashboardPage() {
           </ChartCard>
         </DashboardSection>
       </div>
+      {presenting && data && (
+        <PresentationMode
+          data={data}
+          periodLabel={periodLabel}
+          onClose={() => setPresenting(false)}
+        />
+      )}
     </DashboardLayout>
   );
 }

@@ -13,6 +13,8 @@ interface DashboardLayoutProps {
   lastUpdated?: string;
   isRefreshing: boolean;
   onRefresh: () => void;
+  onPresent?: () => void;
+  presentDisabled?: boolean;
 }
 
 export function DashboardLayout({
@@ -22,6 +24,8 @@ export function DashboardLayout({
   lastUpdated,
   isRefreshing,
   onRefresh,
+  onPresent,
+  presentDisabled,
 }: DashboardLayoutProps) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(true);
@@ -67,6 +71,8 @@ export function DashboardLayout({
           lastUpdated={lastUpdated}
           isRefreshing={isRefreshing}
           onRefresh={onRefresh}
+          onPresent={onPresent}
+          presentDisabled={presentDisabled}
         />
 
         <main className="flex-1 p-3 sm:p-4 lg:p-5 max-w-[106rem] w-full mx-auto">

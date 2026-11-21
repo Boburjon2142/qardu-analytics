@@ -107,3 +107,26 @@
     scroll-behavior: auto !important;
   }
 }
+
+/* Presentation mode */
+@keyframes slideEnter {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.slide-enter {
+  animation: slideEnter 0.35s ease-out both;
+}
+@keyframes slideProgress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}

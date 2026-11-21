@@ -3,6 +3,7 @@
 import React from "react";
 import { AlertCircle, FileQuestion, RefreshCw } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { CARD_THEMES, type CardAccent } from "./cardThemes";
 
 export interface ChartCardProps {
   title: string;
@@ -16,6 +17,8 @@ export interface ChartCardProps {
   headerAction?: React.ReactNode;
   children: React.ReactNode;
   className?: string;
+  /** Section color theme (tinted gradient, accent bar). Neutral white card when omitted. */
+  accent?: CardAccent;
 }
 
 export function ChartCard({
@@ -30,11 +33,14 @@ export function ChartCard({
   headerAction,
   children,
   className,
+  accent,
 }: ChartCardProps) {
+  const theme = accent ? CARD_THEMES[accent] : null;
   return (
     <div
       className={cn(
-        "bg-surface rounded-2xl border border-slate-200/70 p-3.5 sm:p-4 shadow-card hover:shadow-cardHover transition-shadow duration-200 flex flex-col justify-between overflow-hidden",
+        "rounded-2xl border p-3.5 sm:p-4 shadow-card hover:shadow-cardHover transition-shadow duration-200 flex flex-col justify-between overflow-hidden",
+        theme ? [theme.surface, theme.hover] : "bg-surface border-slate-200/70",
         className
       )}
     >
@@ -46,7 +52,12 @@ export function ChartCard({
               {title}
             </h3>
             {unit && (
-              <span className="text-[11px] font-medium px-2 py-0.5 rounded-md bg-slate-100 text-slate-500">
+              <span
+                className={cn(
+                  "text-[11px] font-medium px-2 py-0.5 rounded-md",
+                  theme ? theme.chip : "bg-slate-100 text-slate-500"
+                )}
+              >
                 {unit}
               </span>
             )}

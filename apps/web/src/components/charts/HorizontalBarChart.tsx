@@ -38,6 +38,10 @@ export interface HorizontalBarChartProps<T extends HorizontalBarItem = Horizonta
   barColor?: string;
   allowSorting?: boolean;
   minHeight?: number;
+  /** Hide search/sort controls (e.g. presentation mode). */
+  showToolbar?: boolean;
+  /** Fixed chart height; overrides the data-driven height. */
+  height?: number;
 }
 
 export function HorizontalBarChart<T extends HorizontalBarItem = HorizontalBarItem>({
@@ -46,6 +50,8 @@ export function HorizontalBarChart<T extends HorizontalBarItem = HorizontalBarIt
   barColor = "#5C61A2",
   allowSorting = true,
   minHeight = 460,
+  showToolbar = true,
+  height,
 }: HorizontalBarChartProps<T>) {
   const [sortOrder, setSortOrder] = useState<"desc" | "asc" | "dsc" | "default">("desc");
   const [searchQuery, setSearchQuery] = useState("");
@@ -93,11 +99,12 @@ export function HorizontalBarChart<T extends HorizontalBarItem = HorizontalBarIt
     );
   }
 
-  const dynamicHeight = Math.max(minHeight, chartData.length * 38);
+  const dynamicHeight = height ?? Math.max(minHeight, chartData.length * 38);
 
   return (
     <div className="w-full flex flex-col">
       {/* Search and Sorting Toolbar */}
+      {showToolbar && (
       <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2.5 mb-3 pb-3 border-b border-slate-100">
         {/* Search */}
         <div className="relative flex-1 max-w-xs">
@@ -151,6 +158,7 @@ export function HorizontalBarChart<T extends HorizontalBarItem = HorizontalBarIt
           </div>
         )}
       </div>
+      )}
 
       {chartData.length === 0 ? (
         <div className="py-12 text-center text-xs text-slate-500">

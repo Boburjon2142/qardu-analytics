@@ -9,6 +9,7 @@ import {
   Globe,
   ChevronDown,
   Printer,
+  Maximize,
 } from "lucide-react";
 import { ReportingPeriod } from "@/features/dashboard/types";
 import { REPORTING_PERIOD_OPTIONS } from "@/data/mocks/dashboard.mock";
@@ -20,6 +21,9 @@ interface AppHeaderProps {
   lastUpdated?: string;
   isRefreshing: boolean;
   onRefresh: () => void;
+  /** Opens the full-screen presentation of the indicators. */
+  onPresent?: () => void;
+  presentDisabled?: boolean;
 }
 
 export function AppHeader({
@@ -29,6 +33,8 @@ export function AppHeader({
   lastUpdated,
   isRefreshing,
   onRefresh,
+  onPresent,
+  presentDisabled,
 }: AppHeaderProps) {
   const handlePrint = () => {
     if (typeof window !== "undefined") {
@@ -110,6 +116,21 @@ export function AppHeader({
             </select>
             <ChevronDown className="w-3.5 h-3.5 text-slate-500 absolute right-2.5 pointer-events-none" />
           </div>
+
+          {/* Full-screen presentation */}
+          {onPresent && (
+            <button
+              type="button"
+              onClick={onPresent}
+              disabled={presentDisabled}
+              className="inline-flex items-center gap-1.5 rounded-xl bg-primary p-2.5 text-xs font-semibold text-white shadow-sm transition-colors hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 sm:px-3 sm:py-1.5 no-print"
+              title="Ko'rsatkichlarni to'liq ekranda ko'rsatish"
+              aria-label="Ko'rsatkichlarni to'liq ekranda ko'rsatish"
+            >
+              <Maximize className="h-4 w-4 sm:h-3.5 sm:w-3.5" aria-hidden="true" />
+              <span className="hidden sm:inline">To&apos;liq ekran</span>
+            </button>
+          )}
 
           {/* Print / Export Report Button */}
           <button
