@@ -138,7 +138,7 @@ export function HorizontalBarChart<T extends HorizontalBarItem = HorizontalBarIt
               {sortOrder === "dsc" && (
                 <>
                   <SlidersHorizontal className="w-3.5 h-3.5 text-emerald-600" />
-                  <span>DSc ilmiy darajalilar bo&apos;yicha</span>
+                  <span>Fan doktorlari bo&apos;yicha</span>
                 </>
               )}
               {sortOrder === "default" && (

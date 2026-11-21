@@ -105,8 +105,8 @@ export default function DashboardPage() {
               accentColor="indigo"
               trendText="Ilmiy salohiyat: 44%"
               subMetrics={[
-                { label: "DSc", value: "85 nafar" },
-                { label: "PhD", value: "465 nafar" },
+                { label: "Fan doktori", value: "85 nafar" },
+                { label: "Falsafa doktori", value: "465 nafar" },
                 { label: "Prof. / dots.", value: "420 nafar" },
               ]}
               isLoading={isLoading}

@@ -8,18 +8,18 @@
 
 // Faculty color palette for distinct elegant visualization
 const FACULTY_COLORS = [
-  "#3B5BA9", // Primary Blue
-  "#5B5FA8", // Deep Indigo
-  "#4A9BB0", // Accent Cyan
-  "#4E9A83", // Success Green
+  "#3B5BA9", // Blue
   "#C9954A", // Amber
-  "#B8648A", // Pink
-  "#7C6BB0", // Purple
-  "#4A9C98", // Teal
+  "#4E9A83", // Green
+  "#B8648A", // Rose
+  "#4A9BB0", // Cyan
   "#C27A4E", // Orange
-  "#6E73B5", // Indigo light
-  "#5F86C2", // Blue light
-  "#5A9CC0", // Sky
+  "#7C6BB0", // Purple
+  "#8A9A3B", // Olive
+  "#9C5B54", // Brick
+  "#6D7B8D", // Slate
+  "#2E7D8C", // Deep teal
+  "#8E4F8F", // Plum
 ];
 
 // Sum = 24 500
@@ -42,7 +42,7 @@ export const STUDENTS_BY_FACULTY_MOCK: FacultyStudentData[] = [
 export const STUDENTS_BY_LEVEL_MOCK: EducationLevelData[] = [
   { id: "bachelor", name: "Bakalavriat", count: 22200, percentage: 90.6, color: "#3B5BA9" },
   { id: "master", name: "Magistratura", count: 2050, percentage: 8.4, color: "#5B5FA8" },
-  { id: "phd", name: "Doktorantura (PhD / DSc)", count: 250, percentage: 1.0, color: "#4A9BB0" },
+  { id: "phd", name: "Doktorantura", count: 250, percentage: 1.0, color: "#4A9BB0" },
 ];
 
 // Sum demand = 5 200, provided rate = (4120 / 5200) * 100 = 79.2%

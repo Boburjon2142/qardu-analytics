@@ -7,7 +7,6 @@ import {
   Layers,
   Compass,
   Building,
-  GraduationCap,
   Bus,
   CheckCircle2,
 } from "lucide-react";
@@ -36,7 +35,7 @@ const CAMPUS_CLUSTERS: CampusCluster[] = [
   },
   {
     id: "it-innovations",
-    name: "Yangi shahar kampusi (IT va Iqtisodiyot)",
+    name: "Yangi shahar kampusi (Axborot texnologiyalari va Iqtisodiyot)",
     address: "Qarshi shahri, Mustaqillik shoh ko'chasi, 8-uy",
     facultiesCount: 3,
     buildingsCount: 2,

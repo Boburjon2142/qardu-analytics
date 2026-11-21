@@ -13,6 +13,7 @@ import {
 } from "recharts";
 import { CustomTooltip } from "./CustomTooltip";
 import { useIsNarrow } from "./useIsNarrow";
+import { WrappedTick } from "./WrappedTick";
 import { BuildingCapacityData } from "@/features/dashboard/types";
 import { formatNumber } from "@/lib/formatters";
 
@@ -51,7 +52,7 @@ export function BuildingCapacityChart({
       <ResponsiveContainer width="100%" height="100%">
         <BarChart
           data={chartData}
-          margin={{ top: 15, right: 15, left: -10, bottom: 25 }}
+          margin={{ top: 15, right: 15, left: -10, bottom: narrow ? 25 : 10 }}
         >
           <CartesianGrid
             strokeDasharray="3 3"
@@ -61,18 +62,20 @@ export function BuildingCapacityChart({
           />
           <XAxis
             dataKey="name"
-            tick={{ fill: "#64748B", fontSize: 11, fontWeight: 500 }}
             axisLine={{ stroke: "#E2E8F0" }}
             tickLine={false}
             interval={0}
-            dy={8}
-            {...(narrow ? { angle: -40, textAnchor: "end" as const, height: 64 } : {})}
-            tickFormatter={(val: string) => {
-              if (val.length > 16) {
-                return `${val.substring(0, 14)}…`;
-              }
-              return val;
-            }}
+            {...(narrow
+              ? {
+                  tick: { fill: "#64748B", fontSize: 11, fontWeight: 500 },
+                  dy: 8,
+                  angle: -40,
+                  textAnchor: "end" as const,
+                  height: 64,
+                  tickFormatter: (val: string) =>
+                    val.length > 16 ? `${val.substring(0, 14)}…` : val,
+                }
+              : { tick: <WrappedTick />, height: 56 })}
           />
           <YAxis
             tick={{ fill: "#64748B", fontSize: 11 }}

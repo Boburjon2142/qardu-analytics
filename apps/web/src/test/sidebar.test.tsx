@@ -11,17 +11,17 @@ describe("AppSidebar Component", () => {
   it("renders all 5 required navigation items", () => {
     render(<AppSidebar mobileOpen={false} onMobileClose={() => {}} />);
 
-    expect(screen.getByText("Bosh sahifa")).toBeInTheDocument();
-    expect(screen.getByText("Talabalar")).toBeInTheDocument();
+    expect(screen.getByText("Universitet")).toBeInTheDocument();
+    expect(screen.getByText("Bo'limlar")).toBeInTheDocument();
     expect(screen.getByText("Fakultetlar")).toBeInTheDocument();
-    expect(screen.getByText("O'qituvchilar")).toBeInTheDocument();
+    expect(screen.getByText("Bitiruvchilar")).toBeInTheDocument();
     expect(screen.getByText("Ilmiy faoliyat")).toBeInTheDocument();
   });
 
   it("is collapsed by default and persists expanded toggle in localStorage", () => {
     render(<AppSidebar mobileOpen={false} onMobileClose={() => {}} />);
 
-    const toggleBtn = screen.getByLabelText("Sidebar-ni kengaytirish");
+    const toggleBtn = screen.getByLabelText("Yon panelni kengaytirish");
     expect(toggleBtn).toBeInTheDocument();
 
     // Click toggle to expand
@@ -29,7 +29,7 @@ describe("AppSidebar Component", () => {
     expect(localStorage.getItem("qardu_sidebar_collapsed")).toBe("false");
 
     // Click again to collapse
-    const collapseBtn = screen.getByLabelText("Sidebar-ni ixchamlashtirish");
+    const collapseBtn = screen.getByLabelText("Yon panelni ixchamlashtirish");
     fireEvent.click(collapseBtn);
     expect(localStorage.getItem("qardu_sidebar_collapsed")).toBe("true");
   });

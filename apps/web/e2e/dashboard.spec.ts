@@ -1,7 +1,7 @@
 ﻿import { test, expect } from "@playwright/test";
 import path from "path";
 
-test.describe("QarDU Analytics Dashboard E2E & Visual Baseline", () => {
+test.describe("QarshiDU statistika paneli: E2E va vizual baza", () => {
   test("Desktop 1440px - capture baseline screenshot and verify core elements", async ({
     page,
   }) => {

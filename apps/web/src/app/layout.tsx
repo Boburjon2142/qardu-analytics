@@ -10,7 +10,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "QarshiDU Analytics — Qarshi davlat universiteti statistik-analitik portali",
+  title: "QarshiDU Statistika — Qarshi davlat universitetining statistik-tahliliy portali",
   description:
     "Qarshi davlat universitetining ochiq statistik-analitik ko'rsatkichlari, talabalar kontingenti, professor-o'qituvchilar salohiyati va infratuzilma monitoringi.",
   keywords: [
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
     "QarDU",
     "Qarshi davlat universiteti",
     "Statistika",
-    "Analytics",
+    "Tahlil",
     "Talabalar",
     "Oliy ta'lim",
   ],

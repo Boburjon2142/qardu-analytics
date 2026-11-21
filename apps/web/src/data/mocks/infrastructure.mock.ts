@@ -6,7 +6,7 @@ import {
 export const BUILDINGS_CAPACITY_MOCK: BuildingCapacityData[] = [
   { id: "b1", name: "Bosh o'quv binosi", type: "O'quv binosi", capacity: 3800, occupancy: 3450 },
   { id: "b2", name: "2-o'quv binosi", type: "O'quv binosi", capacity: 2600, occupancy: 2300 },
-  { id: "b3", name: "IT va innovatsiyalar markazi", type: "O'quv va laboratoriya", capacity: 1900, occupancy: 1750 },
+  { id: "b3", name: "Axborot texnologiyalari markazi", type: "O'quv va laboratoriya", capacity: 1900, occupancy: 1750 },
   { id: "b4", name: "Tabiiy fanlar korpusi", type: "Laboratoriya va o'quv", capacity: 2200, occupancy: 1950 },
   { id: "b5", name: "Axborot-resurs markazi (ARM)", type: "Kutubxona va o'quv zallari", capacity: 1200, occupancy: 890 },
   { id: "b6", name: "Madaniyat va sport majmuasi", type: "Sport va madaniy zal", capacity: 1500, occupancy: 1120 },

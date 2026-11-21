@@ -14,8 +14,8 @@ export const TEACHERS_BY_TITLE_MOCK: AcademicTitleData[] = [
 
 // Sum = 1 250
 export const TEACHERS_BY_DEGREE_MOCK: AcademicDegreeData[] = [
-  { id: "dsc", name: "DSc (Fan doktori)", count: 85, percentage: 6.8, color: "#4E9A83" },
-  { id: "phd", name: "PhD (Falsafa doktori / Fan nomzodi)", count: 465, percentage: 37.2, color: "#3B5BA9" },
+  { id: "dsc", name: "Fan doktori", count: 85, percentage: 6.8, color: "#4E9A83" },
+  { id: "phd", name: "Falsafa doktori (fan nomzodi)", count: 465, percentage: 37.2, color: "#3B5BA9" },
   { id: "no_degree", name: "Ilmiy darajasiz", count: 700, percentage: 56.0, color: "#94A3B8" },
 ];
 

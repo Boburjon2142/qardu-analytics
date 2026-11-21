@@ -13,7 +13,6 @@ import {
   ChevronRight,
   X,
   ExternalLink,
-  HelpCircle,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -30,7 +29,7 @@ export interface NavItem {
 const NAV_ITEMS: NavItem[] = [
   {
     id: "dashboard",
-    label: "Bosh sahifa",
+    label: "Universitet",
     href: "/",
     icon: LayoutDashboard,
     isActive: true,
@@ -38,7 +37,7 @@ const NAV_ITEMS: NavItem[] = [
   },
   {
     id: "students",
-    label: "Talabalar",
+    label: "Bo'limlar",
     href: "#",
     icon: GraduationCap,
     badge: "Tez kunda",
@@ -54,7 +53,7 @@ const NAV_ITEMS: NavItem[] = [
   },
   {
     id: "teachers",
-    label: "O'qituvchilar",
+    label: "Bitiruvchilar",
     href: "#",
     icon: Users,
     badge: "Tez kunda",
@@ -85,10 +84,8 @@ export function AppSidebar({
 }: AppSidebarProps) {
   const [internalCollapsed, setIsCollapsed] = useState<boolean>(true);
   const isCollapsed = collapsed ?? internalCollapsed;
-  const [mounted, setMounted] = useState<boolean>(false);
 
   useEffect(() => {
-    setMounted(true);
     const savedState = localStorage.getItem("qardu_sidebar_collapsed");
     if (savedState !== null) {
       setIsCollapsed(savedState === "true");
@@ -144,8 +141,8 @@ export function AppSidebar({
           type="button"
           onClick={toggleCollapse}
           className="hidden lg:flex absolute -right-3.5 top-[56px] z-50 items-center justify-center w-7 h-7 rounded-full border border-border bg-white text-slate-500 shadow-card hover:text-primary hover:border-primary/40 transition-colors outline-none focus-visible:ring-2 focus-visible:ring-primary"
-          aria-label={isCollapsed ? "Sidebar-ni kengaytirish" : "Sidebar-ni ixchamlashtirish"}
-          title={isCollapsed ? "Sidebar-ni kengaytirish" : "Sidebar-ni ixchamlashtirish"}
+          aria-label={isCollapsed ? "Yon panelni kengaytirish" : "Yon panelni ixchamlashtirish"}
+          title={isCollapsed ? "Yon panelni kengaytirish" : "Yon panelni ixchamlashtirish"}
         >
           {isCollapsed ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
         </button>
@@ -166,7 +163,7 @@ export function AppSidebar({
             {(!isCollapsed || mobileOpen) && (
               <div className="flex flex-col min-w-0">
                 <span className="font-bold text-slate-900 text-sm tracking-tight truncate">
-                  QarshiDU Analytics
+                  QarshiDU Statistika
                 </span>
                 <span className="text-[11px] text-slate-500 truncate">
                   Ochiq ma&apos;lumotlar

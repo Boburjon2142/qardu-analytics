@@ -12,7 +12,6 @@ import {
   Cell,
 } from "recharts";
 import { CustomTooltip } from "./CustomTooltip";
-import { formatNumber } from "@/lib/formatters";
 
 export interface VerticalBarItem {
   id?: string;

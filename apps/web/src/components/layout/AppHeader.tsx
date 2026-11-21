@@ -9,7 +9,6 @@ import {
   Globe,
   ChevronDown,
   Printer,
-  Sparkles,
 } from "lucide-react";
 import { ReportingPeriod } from "@/features/dashboard/types";
 import { REPORTING_PERIOD_OPTIONS } from "@/data/mocks/dashboard.mock";
@@ -66,8 +65,8 @@ export function AppHeader({
 
             <div>
               {/* Breadcrumbs */}
-              <nav aria-label="Breadcrumb" className="flex items-center gap-1.5 text-xs text-slate-500 font-medium whitespace-nowrap">
-                <span className="hover:text-slate-700">QarshiDU Analytics</span>
+              <nav aria-label="Sahifa yo'li" className="flex items-center gap-1.5 text-xs text-slate-500 font-medium whitespace-nowrap">
+                <span className="hover:text-slate-700">QarshiDU Statistika</span>
                 <span className="text-slate-300">/</span>
                 <span className="text-primary font-semibold">Bosh sahifa</span>
               </nav>
@@ -117,7 +116,7 @@ export function AppHeader({
             type="button"
             onClick={handlePrint}
             className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-slate-200 bg-white text-xs font-semibold text-slate-700 hover:text-slate-900 hover:bg-slate-50 shadow-sm transition-colors focus:outline-none focus:ring-2 focus:ring-primary no-print"
-            title="Hisobotni chop etish yoki PDF sifatida saqlash"
+            title="Hisobotni chop etish yoki fayl sifatida saqlash"
           >
             <Printer className="w-3.5 h-3.5 text-slate-500" />
             <span>Chop etish</span>
@@ -136,9 +135,9 @@ export function AppHeader({
           </button>
 
           {/* Language Selector */}
-          <div className="flex items-center px-2.5 py-1.5 rounded-xl border border-slate-200 bg-white shadow-sm text-xs font-semibold text-slate-700 gap-1.5 select-none">
+          <div className="hidden sm:flex items-center px-2.5 py-1.5 rounded-xl border border-slate-200 bg-white shadow-sm text-xs font-semibold text-slate-700 gap-1.5 select-none">
             <Globe className="w-3.5 h-3.5 text-slate-500" />
-            <span>UZ</span>
+            <span>O&apos;zbekcha</span>
           </div>
         </div>
       </div>

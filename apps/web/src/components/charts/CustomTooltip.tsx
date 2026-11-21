@@ -124,11 +124,11 @@ export function CustomTooltip({
           {typeof itemData.dscCount === "number" && typeof itemData.phdCount === "number" && (
             <div className="pt-1 mt-1 border-t border-slate-100 space-y-0.5 text-[11px] text-slate-600">
               <div className="flex justify-between">
-                <span>DSc (Fan doktori):</span>
+                <span>Fan doktori:</span>
                 <span className="font-semibold text-emerald-600">{itemData.dscCount}</span>
               </div>
               <div className="flex justify-between">
-                <span>PhD (Falsafa doktori):</span>
+                <span>Falsafa doktori:</span>
                 <span className="font-semibold text-primary">{itemData.phdCount}</span>
               </div>
             </div>
