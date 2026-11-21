@@ -9,8 +9,13 @@ py -3.14 -m venv .venv
 .\.venv\Scripts\python -m pip install -r requirements/dev.txt
 copy .env.example .env   # then edit values; never commit .env
 ```
-`manage.py runserver` checks migrations and therefore needs a reachable PostgreSQL
-(`POSTGRES_*` variables). The database must be created by the owner; this repo does not create it.
+`config.settings.local` loads `.env` itself (real environment variables win). Set a real
+`POSTGRES_PASSWORD` and `DJANGO_SECRET_KEY` there, then create the dev role + database **yourself**
+(prompts for the `postgres` superuser password; dev only, grants `CREATEDB` for test databases):
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts\dev-db-setup.ps1
+```
+`manage.py runserver` checks migrations and therefore needs this reachable PostgreSQL.
 
 ## Checks
 ```powershell
