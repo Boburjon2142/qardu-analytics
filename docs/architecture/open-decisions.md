@@ -55,7 +55,7 @@
 ## G. Texnik (ichki, egasi qaror qiladi)
 | # | Qaror | Holat |
 |---|---|---|
-| G1 | Versiya yo'nalishi: "eng yangi" (Python 3.13, Django 5.2+, PostgreSQL 17, Node 24). Aniq pin Phase 1 da, o'rnatishdan oldin tekshiriladi | DECIDED 2026-11-21 (yo'nalish); aniq versiyalar OPEN |
+| G1 | Versiya yo'nalishi: "eng yangi" (Python 3.13, Django 5.2+, PostgreSQL 17, Node 24). Aniq pin Phase 1 da, o'rnatishdan oldin tekshiriladi | DECIDED 2026-11-21: Python 3.14, Django 6.1.x (6.2 LTS ga ko'chish 2027-04 dan keyin), DRF 3.18.x, PostgreSQL 18 (staging/prod), Node 24. Backend paketlari `apps/api/requirements/` da pin qilingan; PG18 hali amalda sinalmagan (lokalda PG16.13) |
 | G2 | shadcn/ui o'rnatish vaqti | OPEN |
 | G3 | CI provayderi: GitHub Actions | DECIDED 2026-11-21 |
 | G4 | `design-tokens` `apps/web` ichida qoladi (alohida paket keyin, kerak bo'lsa); monorepo = `apps/web` + `apps/api` | DECIDED va bajarildi 2026-11-21 |
