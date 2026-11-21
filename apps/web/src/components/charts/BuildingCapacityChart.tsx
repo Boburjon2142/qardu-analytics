@@ -93,13 +93,13 @@ export function BuildingCapacityChart({
           />
           <Bar
             dataKey="Loyiha sig'imi"
-            fill="#5B5FA8" // Deep Indigo
+            fill="#5E6498" // Deep Indigo
             radius={[6, 6, 0, 0]}
             maxBarSize={36}
           />
           <Bar
             dataKey="Haqiqiy bandlik"
-            fill="#4A9BB0" // Accent Cyan
+            fill="#5A97A6" // Accent Cyan
             radius={[6, 6, 0, 0]}
             maxBarSize={36}
           />

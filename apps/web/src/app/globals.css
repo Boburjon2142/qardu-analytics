@@ -5,6 +5,21 @@
 @tailwind utilities;
 
 @layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+  /* Large monitors: scale rem-based UI so cards and text stay readable. */
+  @media (min-width: 1920px) {
+    html {
+      font-size: 106.25%;
+    }
+  }
+  @media (min-width: 2400px) {
+    html {
+      font-size: 112.5%;
+    }
+  }
   * {
     @apply border-border;
     box-sizing: border-box;
@@ -78,5 +93,17 @@
     box-shadow: none !important;
     border: 1px solid #e2e8f0 !important;
     break-inside: avoid;
+  }
+}
+
+/* Respect users who ask for less motion. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }

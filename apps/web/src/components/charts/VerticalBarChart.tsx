@@ -33,7 +33,7 @@ export function VerticalBarChart<T extends VerticalBarItem = VerticalBarItem>({
   data,
   unit = "nafar",
   height = 280,
-  barColor = "#3B5BA9",
+  barColor = "#425B94",
   showGrid = true,
 }: VerticalBarChartProps<T>) {
   if (!data || data.length === 0) {

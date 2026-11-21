@@ -43,7 +43,7 @@ export default function DashboardPage() {
           name: "Ta'minlangan",
           count: students.dormitorySupply.providedCount,
           percentage: students.dormitorySupply.providedRate,
-          color: "#4E9A83",
+          color: "#5A9684",
         },
         {
           id: "unprovided",
@@ -52,7 +52,7 @@ export default function DashboardPage() {
           percentage: Number(
             (100 - students.dormitorySupply.providedRate).toFixed(1)
           ),
-          color: "#BF5A6B",
+          color: "#B06470",
         },
       ]
     : [];
@@ -68,7 +68,7 @@ export default function DashboardPage() {
       <div className="space-y-4 pb-6">
         {/* 7.1. KPI CARDS */}
         <section aria-label="Asosiy ko'rsatkichlar">
-          <div className="grid grid-cols-1 xl:grid-cols-3 gap-3 sm:gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3 sm:gap-4">
             <StatCard
               title="Talabalar"
               unit="nafar"
@@ -97,20 +97,22 @@ export default function DashboardPage() {
               ]}
               isLoading={isLoading}
             />
-            <StatCard
-              title="O'qituvchilar"
-              unit="nafar"
-              value={kpi?.totalTeachers ?? 0}
-              icon={Users}
-              accentColor="indigo"
-              trendText="Ilmiy salohiyat: 44%"
-              subMetrics={[
-                { label: "Fan doktori", value: "85 nafar" },
-                { label: "Falsafa doktori", value: "465 nafar" },
-                { label: "Prof. / dots.", value: "420 nafar" },
-              ]}
-              isLoading={isLoading}
-            />
+            <div className="md:col-span-2 xl:col-span-1 [&>*]:h-full">
+              <StatCard
+                title="O'qituvchilar"
+                unit="nafar"
+                value={kpi?.totalTeachers ?? 0}
+                icon={Users}
+                accentColor="indigo"
+                trendText="Ilmiy salohiyat: 44%"
+                subMetrics={[
+                  { label: "Fan doktori", value: "85 nafar" },
+                  { label: "Falsafa doktori", value: "465 nafar" },
+                  { label: "Prof. / dots.", value: "420 nafar" },
+                ]}
+                isLoading={isLoading}
+              />
+            </div>
           </div>
         </section>
 
@@ -192,7 +194,7 @@ export default function DashboardPage() {
               <VerticalBarChart
                 data={students?.byType ?? []}
                 unit="nafar"
-                barColor="#3B5BA9"
+                barColor="#425B94"
                 height={250}
               />
             </ChartCard>
@@ -208,7 +210,7 @@ export default function DashboardPage() {
               <VerticalBarChart
                 data={students?.byCourse ?? []}
                 unit="nafar"
-                barColor="#5B5FA8"
+                barColor="#5E6498"
                 height={250}
               />
             </ChartCard>
@@ -340,7 +342,7 @@ export default function DashboardPage() {
                 })) ?? []
               }
               unit="nafar"
-              barColor="#5B5FA8"
+              barColor="#5E6498"
               allowSorting={true}
               minHeight={450}
             />

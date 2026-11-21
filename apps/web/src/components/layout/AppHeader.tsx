@@ -38,13 +38,13 @@ export function AppHeader({
 
   return (
     <header className="sticky top-0 z-30 w-full bg-surface/95 backdrop-blur-md border-b border-border shadow-subtle transition-all">
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between px-4 sm:px-6 py-2.5 gap-3">
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between px-4 sm:px-6 py-2.5 gap-3 max-w-[106rem] mx-auto w-full">
         {/* Left Section: Mobile Toggle & Brand / Title / Breadcrumb */}
         <div className="flex items-center gap-3">
           <button
             type="button"
             onClick={onMobileMenuOpen}
-            className="p-2 -ml-1 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-100 lg:hidden focus:outline-none focus:ring-2 focus:ring-primary"
+            className="p-2.5 -ml-1.5 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-100 lg:hidden focus:outline-none focus:ring-2 focus:ring-primary"
             aria-label="Menyuni ochish"
           >
             <Menu className="w-5 h-5" />
@@ -127,7 +127,7 @@ export function AppHeader({
             type="button"
             onClick={onRefresh}
             disabled={isRefreshing}
-            className="flex items-center justify-center p-2 rounded-xl border border-slate-200 bg-white text-slate-700 hover:text-primary hover:border-slate-300 shadow-sm active:scale-95 transition-all focus:outline-none focus:ring-2 focus:ring-primary disabled:opacity-50 no-print"
+            className="flex items-center justify-center p-2.5 sm:p-2 rounded-xl border border-slate-200 bg-white text-slate-700 hover:text-primary hover:border-slate-300 shadow-sm active:scale-95 transition-all focus:outline-none focus:ring-2 focus:ring-primary disabled:opacity-50 no-print"
             title="Ma'lumotlarni yangilash"
             aria-label="Ma'lumotlarni yangilash"
           >

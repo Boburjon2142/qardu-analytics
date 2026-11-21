@@ -40,16 +40,16 @@ export function StatCard({
       border: "border-slate-200/90 hover:border-blue-300",
       topBar: "border-t-[3px] border-t-primary",
       bgGradient: "bg-gradient-to-br from-[#E4EBF8] via-[#F1F5FB] to-white",
-      iconBg: "bg-[#EEF2F9] text-[#3B5BA9] ring-1 ring-[#DCE4F2]",
+      iconBg: "bg-[#EEF2F9] text-[#425B94] ring-1 ring-[#DCE4F2]",
       textAccent: "text-blue-600",
       badge: "bg-blue-50 text-blue-700 border-blue-200",
       glow: "hover:shadow-blue-500/10",
     },
     green: {
       border: "border-slate-200/90 hover:border-emerald-300",
-      topBar: "border-t-[3px] border-t-[#4E9A83]",
+      topBar: "border-t-[3px] border-t-[#5A9684]",
       bgGradient: "bg-gradient-to-br from-[#DDEFE8] via-[#EEF7F3] to-white",
-      iconBg: "bg-[#EDF5F2] text-[#3F8670] ring-1 ring-[#D9EAE3]",
+      iconBg: "bg-[#EDF5F2] text-[#2F7561] ring-1 ring-[#D9EAE3]",
       textAccent: "text-emerald-600",
       badge: "bg-emerald-50 text-emerald-700 border-emerald-200",
       glow: "hover:shadow-emerald-500/10",
@@ -58,7 +58,7 @@ export function StatCard({
       border: "border-slate-200/90 hover:border-indigo-300",
       topBar: "border-t-[3px] border-t-indigo-600",
       bgGradient: "bg-gradient-to-br from-[#E5E6F5] via-[#F1F1F9] to-white",
-      iconBg: "bg-[#F0F0F8] text-[#5B5FA8] ring-1 ring-[#E1E2F1]",
+      iconBg: "bg-[#F0F0F8] text-[#5E6498] ring-1 ring-[#E1E2F1]",
       textAccent: "text-indigo-600",
       badge: "bg-indigo-50 text-indigo-700 border-indigo-200",
       glow: "hover:shadow-indigo-500/10",
@@ -94,11 +94,11 @@ export function StatCard({
         <div className="flex items-start justify-between">
           <div>
             <div className="flex items-center gap-2">
-              <span className="text-xs font-bold uppercase tracking-wider text-slate-500">
+              <span className="text-xs font-bold uppercase tracking-wider text-slate-600">
                 {title}
               </span>
               {trendText && (
-                <span className="text-[11px] font-semibold text-[#3F8670] bg-[#EDF5F2] px-1.5 py-0.5 rounded-md">
+                <span className="text-[11px] font-semibold text-[#2F7561] bg-[#EDF5F2] px-1.5 py-0.5 rounded-md">
                   {trendText}
                 </span>
               )}
@@ -134,7 +134,7 @@ export function StatCard({
         </div>
 
         {subtitle && (
-          <p className="mt-2 text-xs text-slate-500 font-medium leading-relaxed">
+          <p className="mt-2 text-xs text-slate-600 font-medium leading-relaxed">
             {subtitle}
           </p>
         )}

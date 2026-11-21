@@ -44,7 +44,7 @@ export function DashboardLayout({
   }, []);
 
   return (
-    <div className="min-h-screen bg-canvas text-slate-900 flex flex-col">
+    <div className="min-h-[100dvh] bg-canvas text-slate-900 flex flex-col">
       {/* Sidebar */}
       <AppSidebar
         mobileOpen={mobileOpen}
@@ -69,12 +69,12 @@ export function DashboardLayout({
           onRefresh={onRefresh}
         />
 
-        <main className="flex-1 p-3 sm:p-4 lg:p-5 max-w-[1700px] w-full mx-auto">
+        <main className="flex-1 p-3 sm:p-4 lg:p-5 max-w-[106rem] w-full mx-auto">
           {children}
         </main>
 
         {/* Footer info bar */}
-        <footer className="mt-auto border-t border-border bg-white/60 py-4 px-6 text-xs text-slate-500 flex flex-col sm:flex-row items-center justify-between gap-2">
+        <footer className="mt-auto border-t border-border bg-white/60 py-4 px-4 sm:px-6 pb-[max(1rem,env(safe-area-inset-bottom))] text-xs text-slate-500 flex flex-col sm:flex-row items-center justify-between gap-2">
           <div>
             &copy; {new Date().getFullYear()} Qarshi davlat universiteti. Barcha huquqlar himoyalangan.
           </div>

@@ -87,14 +87,14 @@ export function StackedBarChart({
           <Bar
             dataKey="Band o'rinlar"
             stackId="dorm"
-            fill="#3B5BA9" // Primary Blue
+            fill="#425B94" // Primary Blue
             radius={[0, 0, 0, 0]}
             maxBarSize={48}
           />
           <Bar
             dataKey="Bo'sh o'rinlar"
             stackId="dorm"
-            fill="#4E9A83" // Success Green
+            fill="#5A9684" // Success Green
             radius={[6, 6, 0, 0]}
             maxBarSize={48}
           />

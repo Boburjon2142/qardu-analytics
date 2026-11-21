@@ -43,7 +43,7 @@ export interface HorizontalBarChartProps<T extends HorizontalBarItem = Horizonta
 export function HorizontalBarChart<T extends HorizontalBarItem = HorizontalBarItem>({
   data,
   unit = "nafar",
-  barColor = "#5B5FA8",
+  barColor = "#5E6498",
   allowSorting = true,
   minHeight = 460,
 }: HorizontalBarChartProps<T>) {

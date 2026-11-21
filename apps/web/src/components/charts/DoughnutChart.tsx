@@ -30,18 +30,18 @@ export interface DoughnutChartProps<T extends DoughnutSegment = DoughnutSegment>
 }
 
 const DEFAULT_PALETTE = [
-  "#3B5BA9", // Primary Blue
-  "#5B5FA8", // Deep Indigo
-  "#4A9BB0", // Accent Cyan
-  "#4E9A83", // Success Green
-  "#C9954A", // Amber
-  "#B8648A", // Pink
-  "#7C6BB0", // Purple
-  "#4A9C98", // Teal
-  "#C27A4E", // Orange
-  "#6E73B5", // Indigo light
-  "#5F86C2", // Blue light
-  "#5A9CC0", // Sky
+  "#425B94", // Primary Blue
+  "#5E6498", // Deep Indigo
+  "#5A97A6", // Accent Cyan
+  "#5A9684", // Success Green
+  "#C09A5E", // Amber
+  "#B07088", // Pink
+  "#7F72A5", // Purple
+  "#5A9791", // Teal
+  "#B98059", // Orange
+  "#7377A8", // Indigo light
+  "#6A88B3", // Blue light
+  "#6A98B2", // Sky
 ];
 
 export function DoughnutChart<T extends DoughnutSegment = DoughnutSegment>({
@@ -174,7 +174,7 @@ export function DoughnutChart<T extends DoughnutSegment = DoughnutSegment>({
             side
               ? `flex-1 min-w-0 w-full md:border-l md:border-slate-100 md:pl-5 ${
                 chartData.length > 6
-                  ? "space-y-0.5 md:space-y-0 md:columns-2 min-[1700px]:columns-3 md:gap-x-8"
+                  ? "space-y-0.5 md:space-y-0 md:columns-[17rem] md:gap-x-8"
                   : "space-y-0.5"
               }`
               : "w-full mt-4 pt-3 border-t border-slate-100 max-h-[170px] overflow-y-auto space-y-1 pr-1"

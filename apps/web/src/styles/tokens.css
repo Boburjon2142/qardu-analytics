@@ -1,9 +1,9 @@
 ﻿:root {
   /* Brand & Core Palette */
-  --color-primary-blue: #3B5BA9;
-  --color-deep-indigo: #5B5FA8;
-  --color-accent-cyan: #4A9BB0;
-  --color-success-green: #4E9A83;
+  --color-primary-blue: #425B94;
+  --color-deep-indigo: #5E6498;
+  --color-accent-cyan: #5A97A6;
+  --color-success-green: #5A9684;
   
   /* Neutral Palette */
   --color-canvas: #F7F9FC;
@@ -13,20 +13,20 @@
   --color-border: #E2E8F0;
 
   /* Chart Palette Tokens */
-  --chart-color-1: #3B5BA9;
-  --chart-color-2: #5B5FA8;
-  --chart-color-3: #4A9BB0;
-  --chart-color-4: #4E9A83;
-  --chart-color-5: #C9954A;
-  --chart-color-6: #B8648A;
-  --chart-color-7: #7C6BB0;
-  --chart-color-8: #4A9C98;
-  --chart-color-9: #C27A4E;
-  --chart-color-10: #6E73B5;
-  --chart-color-11: #5F86C2;
-  --chart-color-12: #5A9CC0;
-  --chart-color-13: #8FAA55;
-  --chart-color-14: #BF5A6B;
+  --chart-color-1: #425B94;
+  --chart-color-2: #5E6498;
+  --chart-color-3: #5A97A6;
+  --chart-color-4: #5A9684;
+  --chart-color-5: #C09A5E;
+  --chart-color-6: #B07088;
+  --chart-color-7: #7F72A5;
+  --chart-color-8: #5A9791;
+  --chart-color-9: #B98059;
+  --chart-color-10: #7377A8;
+  --chart-color-11: #6A88B3;
+  --chart-color-12: #6A98B2;
+  --chart-color-13: #93A265;
+  --chart-color-14: #B06470;
 
   /* System tokens (HSL) */
   --background: 220 33% 98%;      /* #F7F9FC */
@@ -35,7 +35,7 @@
   --card-foreground: 222 47% 11%;
   --popover: 0 0% 100%;
   --popover-foreground: 222 47% 11%;
-  --primary: 221 47% 44%;         /* #3B5BA9 */
+  --primary: 221 47% 44%;         /* #425B94 */
   --primary-foreground: 210 40% 98%;
   --secondary: 210 40% 96.1%;
   --secondary-foreground: 222 47% 11.2%;
@@ -47,7 +47,7 @@
   --destructive-foreground: 210 40% 98%;
   --border: 214 32% 91%;          /* #E2E8F0 */
   --input: 214 32% 91%;
-  --ring: 221 47% 44%;
+  --ring: 222 38% 42%;
   --radius: 0.75rem;
 
   /* Dimensions */
