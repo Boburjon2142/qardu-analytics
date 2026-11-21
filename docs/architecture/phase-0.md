@@ -7,13 +7,13 @@
 ## 1. Mavjud holat (verified)
 - `main` branch; Next.js 15 / React 19 / Tailwind 3 Public Dashboard (faqat mock ma'lumot): `src/app/(public)/page.tsx`, `src/features/dashboard/*`, `src/data/mocks/*`.
 - Backend, DB, auth, RBAC, Docker, CI **yo'q**.
-- Mavjud frontend `apps/web` ga ko'chirilishi **rejalashtirilgan, hali ko'chirilmagan** (Approved qaror #2).
+- Mavjud frontend `apps/web` ga ko'chirilishi **2026-11-21 da ko'chirildi** (Approved qaror #2); `design-baseline/` va `.agent/` ildizda qoldi.
 
 ## 2. Taklif etilgan monorepo tuzilmasi (Proposed)
 ```text
 qardu-analytics/
 ├── apps/
-│   ├── web/              # Next.js (hozirgi src/ shu yerga ko'chiriladi — keyingi fazada)
+│   ├── web/              # Next.js (frontend, 2026-11-21 da ko'chirildi)
 │   └── api/              # Django + DRF
 │       ├── config/       # settings/{base,local,staging,production}.py
 │       └── apps/         # accounts, organization, forms, results, approvals, comments,

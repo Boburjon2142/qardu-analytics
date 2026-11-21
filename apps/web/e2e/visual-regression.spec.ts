@@ -3,7 +3,7 @@ import fs from "fs";
 import path from "path";
 
 test.describe("Visual Regression Baseline Checks", () => {
-  const approvedDir = path.resolve(process.cwd(), "design-baseline/approved/v1.0");
+  const approvedDir = path.resolve(process.cwd(), "../../design-baseline/approved/v1.0");
 
   test("Desktop 1440px matches approved baseline if available", async ({ page }) => {
     await page.setViewportSize({ width: 1440, height: 900 });

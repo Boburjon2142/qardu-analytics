@@ -58,7 +58,7 @@
 | G1 | Versiya yo'nalishi: "eng yangi" (Python 3.13, Django 5.2+, PostgreSQL 17, Node 24). Aniq pin Phase 1 da, o'rnatishdan oldin tekshiriladi | DECIDED 2026-11-21 (yo'nalish); aniq versiyalar OPEN |
 | G2 | shadcn/ui o'rnatish vaqti | OPEN |
 | G3 | CI provayderi: GitHub Actions | DECIDED 2026-11-21 |
-| G4 | `design-tokens` `apps/web` ichida qoladi (alohida paket keyin, kerak bo'lsa); monorepo = `apps/web` + `apps/api` | DECIDED 2026-11-21 (ko'chirish alohida tasdiq bilan) |
+| G4 | `design-tokens` `apps/web` ichida qoladi (alohida paket keyin, kerak bo'lsa); monorepo = `apps/web` + `apps/api` | DECIDED va bajarildi 2026-11-21 |
 | G5 | `assssetssssss/` dublikati o'chirildi (hash tekshirilgan); `design-baseline/draft` = DRAFT ma'lumotnoma | DONE 2026-11-21 |
 | G6 | MFA Phase 2 da qayta ko'riladi; parol siyosati va login rate-limit qiymatlari | MFA: deferred; qiymatlar OPEN |
 | G7 | `CLAUDE.md` dagi "GREENFIELD" bayonini haqiqiy holatga moslash | OPEN |

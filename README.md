@@ -97,8 +97,8 @@ Ruxsat nazorati **RBAC + organizational scope + object-level permissions + confi
 │   ├── specification/        # TT v4.0 (.docx)
 │   ├── architecture/         # Phase 0 hujjatlari (Proposed)
 │   └── design/               # Joriy dizayn tizimi (DRAFT)
-├── src/                      # Next.js ilova (app/, components/, features/, data/mocks/, styles/, test/)
-├── e2e/                      # Playwright testlari
+├── apps/web/src/             # Next.js ilova (app/, components/, features/, data/mocks/, styles/, test/)
+├── apps/web/e2e/             # Playwright testlari
 ├── design-baseline/draft/    # DRAFT skrinshotlar (tasdiqlanmagan, faqat ma'lumotnoma)
 ├── public/assets/            # Logotiplar
 ├── .agent/                   # Dizayn workflow ko'rsatmalari
@@ -107,7 +107,7 @@ Ruxsat nazorati **RBAC + organizational scope + object-level permissions + confi
 
 ### Rejalashtirilgan (Proposed, hali yaratilmagan)
 
-`apps/web` (mavjud frontend shu yerga ko‘chiriladi — alohida tasdiq bilan), `apps/api` (Django/DRF), `packages/design-tokens`, `infra/` (Docker/Nginx/CI). To‘liq: [`docs/architecture/phase-0.md`](./docs/architecture/phase-0.md).
+`apps/web` (mavjud frontend 2026-11-21 da shu yerga ko‘chirildi), `apps/api` (Django/DRF), `packages/design-tokens`, `infra/` (Docker/Nginx/CI). To‘liq: [`docs/architecture/phase-0.md`](./docs/architecture/phase-0.md).
 
 ## 8. Ishlab chiqish yo‘l xaritasi
 
@@ -125,9 +125,9 @@ Ruxsat nazorati **RBAC + organizational scope + object-level permissions + confi
 
 ## 9. Lokal ishga tushirish
 
-Faqat mavjud **frontend prototipi** (mock ma'lumot) uchun. `package.json` skriptlari: `npm run dev`, `build`, `start`, `lint`, `test` (Vitest), `test:e2e` (Playwright). **Bu buyruqlar Phase 0a davomida ishga tushirilmagan va tekshirilmagan**; `npm install` talab qilinishi mumkin (`node_modules` lokal mavjud). Backend, DB va Docker mavjud emas.
+Faqat mavjud **frontend prototipi** (mock ma'lumot) uchun. `apps/web/package.json` skriptlari (`cd apps/web` dan ishga tushiring): `npm run dev`, `build`, `start`, `lint`, `test` (Vitest), `test:e2e` (Playwright). Ko‘chirishdan keyin `tsc --noEmit`, `vitest run` (20/20) va `next build` o‘tdi; `lint` va Playwright e2e ishga tushirilmagan. Backend, DB va Docker mavjud emas.
 
-> Vizual regressiya testi (`e2e/visual-regression.spec.ts`) hozir piksel taqqoslamaydi; u dizayn regressiyasi isboti emas.
+> Vizual regressiya testi (`apps/web/e2e/visual-regression.spec.ts`) hozir piksel taqqoslamaydi; u dizayn regressiyasi isboti emas.
 
 ## 10. Xavfsizlik va ma’lumotlar yaxlitligi
 

@@ -5,7 +5,7 @@ Maqomlar: **Specified** (TT v4.0) · **Approved** (egasi tasdiqlagan) · **Propo
 | ID | Qaror | Maqom | Asos / izoh |
 |---|---|---|---|
 | ADR-001 | Mavjud Next.js Public Dashboard saqlanadi | Approved | Phase 0a qarori #1 |
-| ADR-002 | Frontend `apps/web` ga ko'chiriladi — hozir emas, alohida tasdiq bilan | Approved (reja) | Qaror #2 |
+| ADR-002 | Frontend `apps/web` ga ko'chirildi (2026-11-21) | Approved, bajarildi | Qaror #2 |
 | ADR-003 | Mavjud `design-baseline/draft` faqat ma'lumotnoma; Design Freeze e'lon qilinmagan | Approved | Qaror #3 |
 | ADR-004 | Ildiz yo'riqnoma fayli `CLAUDE.md` | Approved | Qaror #4 |
 | ADR-005 | Django session auth, HttpOnly/Secure/SameSite cookie, CSRF | Approved (arxitektura taklifi sifatida) | Qaror #6; TT 4.12 |
@@ -28,7 +28,7 @@ Maqomlar: **Specified** (TT v4.0) · **Approved** (egasi tasdiqlagan) · **Propo
 | ADR-022 | Texnik admin maxfiy kontentga avtomatik kirmaydi | Specified | TT 4.1, 4.2 |
 
 ## Qarorlar 2026-11-21 (egasi, Phase 0)
-- Monorepo: `apps/web` + `apps/api` (ADR-002 tasdiqlandi; ko'chirish hali bajarilmagan, alohida tasdiq bilan). Design tokens `apps/web` ichida.
+- Monorepo: `apps/web` + `apps/api` (ADR-002 tasdiqlandi; ko'chirish 2026-11-21 da bajarildi). Design tokens `apps/web` ichida.
 - CI: GitHub Actions (Approved).
 - MFA: Phase 2 da qayta ko'rib chiqiladi (Deferred).
 - `design-baseline/draft` DRAFT qoladi; Design Freeze e'lon qilinmagan.
