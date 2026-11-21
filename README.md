@@ -1,189 +1,177 @@
-# QarDU Analytics — Master Platform (Phase 1)
-> **Qarshi davlat universiteti statistik-analitik platformasi (Public Main Dashboard)**
+# QarDU Analytics
 
----
+**Qarshi davlat universiteti faoliyat natijalarini yig‘ish, tasdiqlash, tarixiy saqlash va tahlil qilish uchun axborot-analitik platforma.**
 
-## 1. Loyiha haqida
+> **Loyiha holati:** Phase 0a (arxitektura hujjatlari). Repozitoriyda faqat **Public Dashboard prototipi** (Next.js, **mock ma'lumotlar bilan**) mavjud. Backend, ma'lumotlar bazasi, autentifikatsiya, ADMIN va PRIVATE qismlari **hali yaratilmagan**. README'ning qolgan qismi rejalashtirilgan tizimni tavsiflaydi va u hozir ishlayotganini anglatmaydi.  
+> **Arxitektura hujjatlari:** [`docs/architecture/`](./docs/architecture/phase-0.md) (barchasi *Proposed*, tasdiqlanmagan).  
+> **Asos:** *QarDU Analytics — Texnik topshiriq (TT) v4.0*, 17.11.2026, **rasmiy tasdiqlash uchun loyiha**.  
+> **Muhandislik qoidalari:** [`CLAUDE.md`](./CLAUDE.md).
 
-**QarDU Analytics** — Qarshi davlat universitetining ta'lim, ilmiy salohiyat, professor-o'qituvchilar kontingenti va moddiy-texnik bazasi bo'yicha yagona, ochiq statistik-analitik monitoring platformasidir.
+## 1. Maqsad
 
-Ushbu 1-bosqichda platformaning **Public Main Dashboard** qismi to'liq professional darajada amalga oshirildi. Arxitektura kelajakda qo'shiladigan **Private Platform** (fakultet dekanlari, kafedra mudirlari va bo'lim boshliqlari kabinetlari) hamda **Django REST Framework** backend tizimini minimal refactoring bilan integratsiya qilishga to'liq moslashtirilgan (Repository / Adapter pattern).
+QarDU Analytics universitet fakultetlari, kafedralari, bo‘limlari va markazlarining **amalda erishilgan natijalari**ni yagona, vakolatlar bilan himoyalangan axborot muhitida boshqaradi. Platforma natijalarni kiritish, tekshirish, tasdiqlash, o‘zgarmas tarixini saqlash va vakolat doirasida vizuallashtirishni ko‘zda tutadi. Ochiq sahifalarda faqat alohida nashr qilingan, maxfiylik tekshiruvidan o‘tgan sonli statistikalar aks etadi.
 
----
+**Tizimga kirmaydi:** KPI, target, reja–fakt reytingi, xodimlarga avtomatik baho qo‘yish, vazifalar taqsimoti, ish vaqtini hisoblash yoki ichki chat.
 
-## 2. Ishlatilgan texnologiyalar
+## 2. Platforma qismlari
 
-- **Frontend Framework**: Next.js 15 (App Router, Server Components + Client Boundary Optimization)
-- **Til**: TypeScript (Strict Mode)
-- **UI & Styling**: Tailwind CSS, CSS Variables / Design Tokens, Lucide React
-- **Vizualizatsiya & Diagrammalar**: Recharts
-- **Server State & Data Fetching**: TanStack Query (React Query v5)
-- **Table Data Architecture**: TanStack Table v8 (Keyingi bosqich jadvallari uchun tayyor)
-- **Unit & Integration Testing**: Vitest, React Testing Library, JSDOM
-- **E2E & Visual Regression**: Playwright Test (Chromium)
+| Qism | Asosiy vazifa | Chegara |
+| --- | --- | --- |
+| **ADMIN** | Tashkiliy tuzilma o‘zgarishlariga so‘rov, foydalanuvchi/vakolatlar, CUSTOM formalar, texnik boshqaruv | Texnik administrator maxfiy natija va izohlarni avtomatik ko‘rmaydi |
+| **PRIVATE** | Natija kiritish, dalillar, tasdiqlash, tarix, analitika, rahbarning maxfiy izohi va bildirishnomalar | Har bir so‘rovda rol + bo‘linma + obyekt + maxfiylik ruxsati tekshiriladi |
+| **PUBLIC** | Ruxsat etilgan sonli ko‘rsatkichlar, grafiklar, jadvallar va filtrlar | Xom dalillar, matnli tavsiflar, shaxs identifikatorlari va ichki izohlar oshkor etilmaydi |
 
----
+## 3. MVP modullari
 
-## 3. Dizayn tizimi (Design Tokens & Aesthetics)
+- **M01 — Universitet tuzilmasi:** fakultet, kafedra, bo‘lim va markazlarning amal qilish sanalari bilan saqlanadigan iyerarxiyasi; tuzilmani o‘zgartirish faqat tasdiqlangan so‘rov orqali.
+- **M02 — Talabalar statistikasi:** universitet tasdiqlaydigan CUSTOM formalar va metrikalar asosida natijalarni qayd qilish.
+- **M04 — Professor-o‘qituvchilar va kadrlar:** kelishilgan formalar orqali tegishli natijalarni yuritish.
+- **M05 — Ilmiy faoliyat:** ilmiy natijalarni qayd etish va davrlar bo‘yicha tahlil qilish.
 
-Ushbu loyiha **Design Freeze** tamoyiliga qat'iy rioya qiladi (`Design Baseline v1.0`).
+M03 yoki qo‘shimcha modullarni rasmiy talab bo‘lmasdan yaratmang. M02/M04/M05 uchun aniq maydonlar, o‘lchov birliklari va aggregatsiya qoidalari hali universitet bilan kelishiladi.
 
-### Ranglar palitrasi
-- **Primary Blue**: `#2563EB` (Talabalar kontingenti va asosiy aksentlar)
-- **Deep Indigo**: `#4F46E5` (O'qituvchilar va bino infratuzilmasi)
-- **Accent Cyan**: `#06B6D4` (Haqiqiy bandlik va doktorantura)
-- **Success Green**: `#10B981` (Fakultetlar va yotoqxona bilan ta'minlanganlik)
-- **Canvas / Background**: `#F7F9FC`
-- **Surface / Card**: `#FFFFFF`
-- **Text (Foreground)**: `#0F172A`
-- **Muted Text**: `#64748B`
-- **Border**: `#E2E8F0`
+## 4. Asosiy ish jarayonlari
 
-### Tipografiya
-- Shrift: **Inter** (Latin / Cyrillic)
-- Sonlar formati: `Intl.NumberFormat('uz-UZ')` (Mingliklar probel bilan ajratilgan, masalan: `24 500`)
+### Natijani kiritish va tasdiqlash
 
----
+1. Vakolatli bo‘linma rahbari o‘ziga biriktirilgan **published** CUSTOM forma orqali `draft` yaratadi.
+2. Server majburiy maydonlar, format, dalil fayli, vaqt/davr va takrorlash ehtimolini tekshiradi.
+3. Natija mas’ul tasdiqlovchiga yuboriladi; **muallif o‘z natijasini tasdiqlay olmaydi**.
+4. `approved` versiya o‘zgarmas tarixiy yozuv sifatida saqlanadi. Tuzatish yangi `ResultRevision` va takroriy tasdiqlash orqali amalga oshadi.
+5. Rektor yoki vakolatli prorektor izoh va qayta ko‘rish so‘rovini kiritishi mumkin; maxfiy izoh faqat muallifi va belgilangan oluvchiga ko‘rinadi. Izohga javob yozish/chat funksiyasi yo‘q.
 
-## 4. Dashboard tarkibi va diagrammalar (11 ta diagramma)
+**Natija holatlari:** `draft`, `submitted`, `validation_failed`, `pending_approval`, `approved`, `rejected`, `revision_requested`, `superseded`.
 
-### 4.1. Asosiy KPI Kartalar (3 ta)
-1. **Talabalar**: Jami faol talabalar soni (`24 500`), GraduationCap icon, Blue aksent.
-2. **Fakultetlar**: Faol fakultetlar soni (`12`), Building2 icon, Green aksent.
-3. **O'qituvchilar**: Asosiy shtatdagi o'qituvchilar soni (`1 250`), Users icon, Indigo aksent.
+### CUSTOM formalar
 
-### 4.2. Talabalar kontingenti — 3 ta Doughnut Chart
-- **Chart 1 — Fakultetlar kesimida**: 12 ta fakultet bo'yicha alohida segmentlar, markazida jami talaba (`24 500`).
-- **Chart 2 — Ta'lim darajasi kesimida**: Bakalavriat (`22 200`), Magistratura (`2 050`), Doktorantura (`250`). Jami = `24 500`.
-- **Chart 3 — Yotoqxona bilan ta'minlanganlik**: Ta'minlangan (`4 120`), Ta'minlanmagan (`1 080`). Markazida ta'minlanganlik foizi (`79.2%`), nolga bo'lishdan himoyalangan xavfsiz formula.
+Formalarni faqat texnik administrator yaratadi, sinovdan o‘tkazadi, nashr qiladi va bo‘linmalarga biriktiradi. Hayotiy sikl: `draft → testing → published → superseded → archived`. Nashr qilingan `FormVersion` tahrirlanmaydi; yangi maydonlar uchun yangi versiya yaratiladi. Forma konfiguratsiyasidan ixtiyoriy HTML/JavaScript bajarilmaydi.
 
-### 4.3. Talabalar — Ustunli diagrammalar (2 ta)
-- **Chart 4 — Ta'lim turi kesimida**: Kunduzgi (`15 200`), Sirtqi (`6 800`), Kechki (`1 650`), Masofaviy (`850`). Jami = `24 500`.
-- **Chart 5 — Kurslar kesimida**: 1-kurs (`7 150`), 2-kurs (`6 300`), 3-kurs (`5 650`), 4-kurs (`4 900`), 5-kurs (`500`). Jami = `24 500`.
+### Analitika va ochiq nashr
 
-### 4.4. Infratuzilma va moddiy-texnik baza
-- **Chart 6 — Universitet binolari va sig'imi**: O'quv binosi, laboratoriya, ARM va sport majmuasi bo'yicha loyiha sig'imi hamda haqiqiy bandlik.
-- **Chart 7 — Yotoqxona sig'imi**: Stacked Bar Chart (5 ta TTJ bo'yicha band va bo'sh o'rinlar, jami band o'rinlar = `4 120`, talabalar turar joyi statistikasi bilan to'liq uyg'un).
+- Filtrlar: oy, chorak, yarim yil, yil va ixtiyoriy sana oralig‘i.
+- Reviziyalar hamda joriy natijaga havola qilgan davriy hisobotlar **ikki marta sanalmaydi**.
+- `NULL` qiymati `0` deb qabul qilinmaydi; foiz, o‘rtacha va noyob subyektlar uchun metrikaga xos agregatsiya qoidasidan foydalaniladi.
+- Bo‘linma rahbari ruxsatli statistikani nashrga taklif qiladi; **Publisher** alohida, versiyalangan **numeric-only snapshot**ni e’lon qiladi. Yangi tasdiqlangan ichki natija PUBLICni avtomatik yangilamaydi.
 
-### 4.5. O'qituvchilar va ilmiy salohiyat — 3 ta Doughnut Chart
-- **Chart 8 — Ilmiy unvonlar**: Professor (`75`), Dotsent (`345`), Katta ilmiy xodim (`95`), Ilmiy unvonsiz (`735`). Jami = `1 250`.
-- **Chart 9 — Ilmiy darajalar**: DSc (`85`), PhD (`465`), Ilmiy darajasiz (`700`). Jami = `1 250`.
-- **Chart 10 — Ilmiy nashrlar**: Q1 maqolalar (`124`), Scopus (`286`), Boshqa jurnallar (`390`), Konferensiya materiallari (`215`), Boshqa nashrlar (`60`). Jami noyob nashrlar = `1 075` (qayta hisoblashlarsiz).
+## 5. Foydalanuvchi rollari
 
-### 4.6. Fakultetlar bo'yicha tahlil
-- **Chart 11 — O'qituvchilar soni fakultetlar kesimida**: Gorizontal ustunli diagramma, 12 ta fakultetning to'liq nomlari, kamayish / o'sish bo'yicha saralash tugmasi, DSc va PhD ma'lumotlari bilan boyitilgan tooltip.
+| Rol | Asosiy vakolat |
+| --- | --- |
+| Kafedra mudiri | O‘z kafedrasiga tegishli natijalarni kiritish/ko‘rish |
+| Bo‘lim yoki markaz rahbari | O‘z bo‘linmasi natijalarini kiritish/ko‘rish |
+| Dekan | O‘z fakulteti va unga qarashli kafedralar natijalarini ko‘rish |
+| Prorektor | Administrator biriktirgan bo‘linmalar bo‘yicha tahlil, izoh va reviziya so‘rovi |
+| Rektor | Barcha bo‘linmalar natijalarini ko‘rish; boshqalarning maxfiy izohlariga avtomatik ruxsat yo‘q |
+| Mas’ul tasdiqlovchi | Belgilangan natijalarni tasdiqlash yoki qaytarish |
+| Publisher | Tekshirilgan statistik snapshotlarni ochiq nashr qilish |
+| Texnik administrator | Tizim konfiguratsiyasi, formalar, vakolatlar va tuzilma so‘rovlari |
+| Public visitor | Faqat nashr etilgan statistik snapshotlarni ko‘rish |
 
-### 4.7. Hududiy joylashuv (GIS)
-- **FacultyMapPlaceholder**: Qarshi shahridagi binolar dislokatsiyasining 2-bosqichdagi interaktiv GIS integratsiyasi uchun tayyor placeholder bloki.
+Ruxsat nazorati **RBAC + organizational scope + object-level permissions + confidentiality classification** asosida, backendning `list/detail/create/update/export/download` nuqtalarida tekshiriladi. Rollarning amal qilish muddati mavjud bo‘ladi.
 
----
+## 6. Texnologik stek (TT v4.0 bo‘yicha reja)
 
-## 5. Collapsible Sidebar & Header
+| Qatlam | Tanlangan yo‘nalish |
+| --- | --- |
+| Frontend | Next.js + TypeScript |
+| UI | Tailwind CSS + shadcn/ui + design tokens |
+| Server state, jadval va grafik | TanStack Query, TanStack Table, Recharts |
+| Backend / API | Django + Django REST Framework; `/api/v1/` |
+| Ma’lumotlar bazasi | PostgreSQL; relational core + versiyalangan JSONB + metric projection |
+| Asinxron vazifalar | Zaruratga qarab Redis/Celery (email, fayl tekshiruvi, eksport) |
+| Infrastruktura | Docker, Nginx, staging, CI/CD, monitoring va rollback |
 
-- **Sidebar**: Dastlab collapsed (`72px`, icon-only), hover tooltiplar, kengaytirilganda `240px`, silliq 200ms animatsiya, `localStorage`da holat saqlanishi, mobil qurilmalarda backdrop va `ESC` orqali yopiladigan drawer.
-- **Navigatsiya elementlari (5 ta)**:
-  1. Bosh sahifa (Faol)
-  2. Talabalar (Kelajak bosqich)
-  3. Fakultetlar (Kelajak bosqich)
-  4. O'qituvchilar (Kelajak bosqich)
-  5. Ilmiy faoliyat (Kelajak bosqich)
-- **Header**: QarDU rasmiy vektori logotipi, platforma nomi, breadcrumb, hisobot davrini tanlash (`2024–2025`, `2023–2024`, `2022–2023`), oxirgi yangilanish vaqti, animatsiyali ma'lumotlarni yangilash tugmasi, til tanlash (UZ).
+**Haqiqatda mavjud (verified):** Next.js ^15.1.7, React ^19, TypeScript, Tailwind ^3.4, TanStack Query/Table, Recharts, Vitest, Playwright (`package.json`). shadcn/ui hali o‘rnatilmagan. Django, PostgreSQL, Redis/Celery, Docker, Nginx va CI **mavjud emas**.
 
----
+**Qabul qilingan qaror:** autentifikatsiya — Django session (HttpOnly/Secure/SameSite cookie + CSRF). Boshqa versiyalar, hosting va monorepo konfiguratsiyasi: [`docs/architecture/architecture-decisions.md`](./docs/architecture/architecture-decisions.md).
 
-## 6. Loyiha arxitekturasi
+## 7. Repozitoriy tuzilmasi
+
+### Hozirgi (haqiqiy)
 
 ```text
-src/
-├── app/
-│   ├── (public)/
-│   │   └── page.tsx           # Public Main Dashboard sahifasi
-│   ├── layout.tsx             # Root layout (Inter font, metadata, QueryProvider)
-│   └── globals.css            # Global CSS, scrollbar va base uslublar
-│
-├── components/
-│   ├── layout/
-│   │   ├── AppSidebar.tsx     # Collapsible / Drawer sidebar
-│   │   ├── AppHeader.tsx      # Header va filtrlash boshqaruvi
-│   │   └── DashboardLayout.tsx# Umumiy responsive layout
-│   ├── dashboard/
-│   │   ├── StatCard.tsx       # KPI ko'rsatkichlar kartasi
-│   │   ├── ChartCard.tsx      # Diagramma konteyneri (loading, empty, error holatlari)
-│   │   ├── DashboardSection.tsx # Seksiyalar sarlavhasi va strukturasi
-│   │   └── FacultyMapPlaceholder.tsx # 2-bosqich GIS xarita joyi
-│   ├── charts/
-│   │   ├── CustomTooltip.tsx  # Yagona formatlangan interaktiv tooltip
-│   │   ├── DoughnutChart.tsx  # Markazida son ko'rsatuvchi halqasimon diagramma
-│   │   ├── VerticalBarChart.tsx # Vertikal ustunli diagramma
-│   │   ├── HorizontalBarChart.tsx # Gorizontal ustunli saralanuvchi diagramma
-│   │   ├── BuildingCapacityChart.tsx # Bino sig'imi va bandligi diagrammasi
-│   │   └── StackedBarChart.tsx# TTJ sig'imi bo'yicha to'plangan ustunli diagramma
-│   └── providers/
-│       └── QueryProvider.tsx  # TanStack React Query ta'minlovchisi
-│
-├── features/
-│   └── dashboard/
-│       ├── hooks/
-│       │   └── useDashboardData.ts # TanStack Query hooki
-│       ├── services/
-│       │   └── dashboardRepository.ts # Repository Pattern (Django API almashishga tayyor)
-│       ├── adapters/
-│       │   └── dashboardAdapter.ts    # Adapter Pattern (Backend javobini transformatsiya qilish)
-│       └── types/
-│           └── index.ts               # Domain modellari va qat'iy TypeScript tiplari
-│
-├── data/
-│   └── mocks/
-│       ├── faculties.mock.ts
-│       ├── students.mock.ts
-│       ├── teachers.mock.ts
-│       ├── infrastructure.mock.ts
-│       ├── research.mock.ts
-│       └── dashboard.mock.ts
-│
-├── lib/
-│   ├── utils.ts               # cn (clsx + twMerge), xavfsiz foiz hisoblash
-│   └── formatters.ts          # uz-UZ sonlar va foizlar formati
-│
-└── styles/
-    └── tokens.css             # CSS Variables & Design Freeze ranglari
+.
+├── CLAUDE.md                 # Claude Code uchun doimiy qoidalar
+├── README.md
+├── docs/
+│   ├── specification/        # TT v4.0 (.docx)
+│   ├── architecture/         # Phase 0 hujjatlari (Proposed)
+│   └── design/               # Joriy dizayn tizimi (DRAFT)
+├── src/                      # Next.js ilova (app/, components/, features/, data/mocks/, styles/, test/)
+├── e2e/                      # Playwright testlari
+├── design-baseline/draft/    # DRAFT skrinshotlar (tasdiqlanmagan, faqat ma'lumotnoma)
+├── public/assets/            # Logotiplar
+├── .agent/                   # Dizayn workflow ko'rsatmalari
+└── package.json, next.config.mjs, tailwind.config.ts, vitest.config.ts, playwright.config.ts
 ```
+
+### Rejalashtirilgan (Proposed, hali yaratilmagan)
+
+`apps/web` (mavjud frontend shu yerga ko‘chiriladi — alohida tasdiq bilan), `apps/api` (Django/DRF), `packages/design-tokens`, `infra/` (Docker/Nginx/CI). To‘liq: [`docs/architecture/phase-0.md`](./docs/architecture/phase-0.md).
+
+## 8. Ishlab chiqish yo‘l xaritasi
+
+| Bosqich | Yakuniy natija | Holat |
+| --- | --- | --- |
+| **Phase 0** | TT gap-analysis; arxitektura, ERD, permission matrix, ADR, MVP backlog | Phase 0a hujjatlari tayyor (tasdiq kutilmoqda) |
+| **Phase 1** | Repo scaffold, sifat tekshiruvlari, lokal Docker/PostgreSQL, bazaviy CI | Rejada |
+| **Phase 2** | Authentication/RBAC va M01; tuzilma tarixini tasdiqlash | Rejada |
+| **Phase 3** | CUSTOM formalar, natija/reviziya, dalil, approval va audit | Rejada |
+| **Phase 4** | M02/M04/M05, metrikaning to‘g‘ri agregatsiyasi va dashboardlar | Rejada |
+| **Phase 5** | Maxfiy izohlar, bildirishnomalar, Publisher va PUBLIC snapshotlar | Rejada |
+| **Phase 6** | E2E, xavfsizlik, accessibility, load test, restore/rollback va pilot | Rejada |
+
+> Har bir bosqichni boshlashdan oldin uning scope’i va qabul mezonlari tasdiqlanadi. Hozir **Phase 0a** yakunlangan; scaffold, dependency o‘rnatish va frontendni ko‘chirish alohida tasdiqni kutadi.
+
+## 9. Lokal ishga tushirish
+
+Faqat mavjud **frontend prototipi** (mock ma'lumot) uchun. `package.json` skriptlari: `npm run dev`, `build`, `start`, `lint`, `test` (Vitest), `test:e2e` (Playwright). **Bu buyruqlar Phase 0a davomida ishga tushirilmagan va tekshirilmagan**; `npm install` talab qilinishi mumkin (`node_modules` lokal mavjud). Backend, DB va Docker mavjud emas.
+
+> Vizual regressiya testi (`e2e/visual-regression.spec.ts`) hozir piksel taqqoslamaydi; u dizayn regressiyasi isboti emas.
+
+## 10. Xavfsizlik va ma’lumotlar yaxlitligi
+
+- `.env`, tokenlar, parollar va haqiqiy universitet ma’lumotlarini Git’ga kiritmang; lokal sinovda sintetik ma’lumotlardan foydalaning.
+- `approved` reviziyalar append-only; oddiy UPDATE/DELETE taqiqlanadi. Izchillik DB transaction/constraint va audit darajasida mustahkamlanadi.
+- Dalil fayllari private storage’da saqlanadi; access control, MIME/size tekshiruvi, SHA-256 va xavfsizlik tekshiruvi statusi qo‘llanadi.
+- PUBLIC va PRIVATE API/serializer/cache chegaralari mustaqil himoyalanadi; oddiy admin roli maxfiy materiallarga universal kirish huquqini bermaydi.
+- HTTPS, xavfsiz cookie/CSRF, login rate-limit, audit, backup/restore va rollback uchun testlar talab qilinadi.
+- HEMIS kabi tashqi integratsiyalar faqat alohida ruxsat, identifikator/mapping va API kontraktlaridan keyin amalga oshiriladi.
+
+## 11. Dizayn va qabul mezonlari
+
+**Design Freeze:** yangi loyiha uchun avval design tokens, ekranlar va Figma/screenshot baseline tasdiqlanadi. Shundan keyin tasdiqlangan ekranlar yozma **Change Request (CR)**siz vizual o‘zgartirilmaydi. CUSTOM forma administratoriga UI stilini o‘zgartirish vakolati berilmaydi.
+
+**Joriy holat:** `design-baseline/draft/` dagi skrinshotlar (1440/768/390) **DRAFT** — tasdiqlanmagan, Design Freeze e'lon qilinmagan. Tafsilot: [`docs/design/design-system-current.md`](./docs/design/design-system-current.md).
+
+**Qabul maqsadlari (hali o‘lchanmagan):**
+
+- WCAG 2.2 AA; 320, 390, 768, 1440 va 1920 px ekranlar, 200% zoom va keyboard navigation.
+- 100 parallel foydalanuvchi: 40 ta yozish, 40 ta PRIVATE dashboard, 20 ta PUBLIC; 30 daqiqalik test va 5 daqiqalik ramp-up.
+- Oddiy API `p95 ≤ 300 ms`; analytics API `p95 ≤ 500 ms`; natijani saqlash `p95 ≤ 1000 ms` (katta upload bundan mustasno).
+- PUBLIC: `p75 LCP ≤ 2.5 s`, `INP ≤ 200 ms`, `CLS ≤ 0.1`; yuklama testida `5xx < 1%`.
+- TT v4.0 dagi **AC-01…AC-14** qabul ssenariylari bajarilishi.
+
+Yuqoridagi qiymatlar **dastlabki loyiha SLO/qabul maqsadlari**, amaldagi o‘lchangan natijalar emas.
+
+## 12. Hali tasdiqlanishi kerak bo‘lgan masalalar
+
+- TT v4.0 ga rasmiy imzolar; haqiqiy universitet tuzilmasi va mas’ul shaxslar.
+- Prorektor scope’lari, approval matrix, publisherlar, tuzilma o‘zgarishini tasdiqlovchi vakolatli rahbar.
+- M02/M04/M05 formalarining aniq maydonlari, dalil majburiyligi, aggregatsiya va deduplikatsiya qoidalari.
+- Ma’lumotlarni saqlash muddati, small-group privacy chegaralari, hosting, SMTP, RPO/RTO va integratsiya ruxsatlari.
+- Dastlabki **20 MB dalil fayli / 50 MB import** limitlari tavsiya maqomida, qat’iy tasdiqlanmagan.
+- Figma dizayn etaloni va keyingi vizual Change Request tartibi.
+
+## 13. Ishlash tartibi va hujjatlar
+
+- **`README.md`** — yangi dasturchi uchun loyiha tavsifi, haqiqiy joriy holat va ishga tushirish yo‘riqnomasi.
+- **`CLAUDE.md`** — Claude Code uchun doimiy cheklovlar, xavfsizlik, ish ketma-ketligi va javob formati.
+- **TT v4.0** — funksional talablar va qabul mezonlarining asosiy loyiha manbasi; hujjat hozir rasmiy tasdiqlash bosqichida.
+- **`docs/architecture/`** — arxitektura qarorlari, ERD, ruxsat matritsasi, API kontrakti va ochiq qarorlar (hammasi *Proposed*).
+
+**Keyingi amaliy qadam:** Phase 0 arxitekturasini tayyorlash va tasdiqlash. Hali biror modulni “tayyor” deb belgilash yoki sinovdan o‘tmagan buyruqlarni README’ga qo‘shish mumkin emas.
 
 ---
 
-## 7. Ishga tushirish va test buyruqlari
-
-### Dasturni ishlab chiqish rejimida ishga tushirish:
-```bash
-npm run dev
-```
-Brauzerda ochish: `http://localhost:3000`
-
-### Production build tayyorlash va tekshirish:
-```bash
-npm run build
-npm start
-```
-
-### Barcha Vitest unit va integratsion testlarni bajarish:
-```bash
-npm run test
-```
-*Natija: 4 ta test suite, 20 ta test to'liq muvaffaqiyatli o'tadi.*
-
-### Playwright E2E va Visual Baseline testlarni bajarish:
-```bash
-npm run test:e2e
-```
-*Natija: Desktop 1440px, Tablet 768px, Mobile 390px va davr filtri testlari to'liq o'tadi.*
-
----
-
-## 8. Design Baseline (Screenshotlar)
-
-Loyiha uchun quyidagi o'lchamlarda skrinshotlar olingan va `design-baseline/draft/` papkasida saqlangan:
-1. `design-baseline/draft/desktop-1440.png` (Desktop 1440px)
-2. `design-baseline/draft/tablet-768.png` (Tablet 768px)
-3. `design-baseline/draft/mobile-390.png` (Mobile 390px)
-
-Foydalanuvchi tasdiqlaganidan so'ng ushbu skrinshotlar `design-baseline/approved/v1.0/` katalogiga o'tkaziladi.
+*Hujjatning boshlang‘ich versiyasi: 1.0 · 17-noyabr 2026 · QarDU Analytics greenfield planning.*
