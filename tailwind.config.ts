@@ -1,4 +1,4 @@
-import type { Config } from "tailwindcss";
+﻿import type { Config } from "tailwindcss";
 
 const config: Config = {
   darkMode: ["class"],
@@ -29,30 +29,30 @@ const config: Config = {
           50: "#EFF6FF",
           100: "#DBEAFE",
           200: "#BFDBFE",
-          500: "#3B82F6",
-          600: "#2563EB",
+          500: "#5F86C2",
+          600: "#3B5BA9",
           700: "#1D4ED8",
         },
         indigo: {
-          DEFAULT: "#4F46E5",
+          DEFAULT: "#5B5FA8",
           50: "#EEF2FF",
           100: "#E0E7FF",
-          500: "#6366F1",
-          600: "#4F46E5",
+          500: "#6E73B5",
+          600: "#5B5FA8",
           700: "#4338CA",
         },
         cyan: {
-          DEFAULT: "#06B6D4",
+          DEFAULT: "#4A9BB0",
           50: "#ECFEFF",
           100: "#CFFAFE",
-          500: "#06B6D4",
+          500: "#4A9BB0",
           600: "#0891B2",
         },
         success: {
-          DEFAULT: "#10B981",
+          DEFAULT: "#4E9A83",
           50: "#ECFDF5",
           100: "#D1FAE5",
-          500: "#10B981",
+          500: "#4E9A83",
           600: "#059669",
         },
         canvas: "#F7F9FC",

@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React from "react";
 import {
@@ -12,6 +12,7 @@ import {
   Legend,
 } from "recharts";
 import { CustomTooltip } from "./CustomTooltip";
+import { useIsNarrow } from "./useIsNarrow";
 import { DormitoryCapacityItem } from "@/features/dashboard/types";
 import { formatNumber } from "@/lib/formatters";
 
@@ -26,6 +27,7 @@ export function StackedBarChart({
   unit = "o'rin",
   height = 300,
 }: StackedBarChartProps) {
+  const narrow = useIsNarrow();
   if (!data || data.length === 0) {
     return (
       <div className="flex items-center justify-center h-[300px] text-xs text-slate-400">
@@ -65,6 +67,8 @@ export function StackedBarChart({
             tickLine={false}
             interval={0}
             dy={8}
+            {...(narrow ? { angle: -40, textAnchor: "end" as const, height: 64 } : {})}
+            tickFormatter={(val: string) => (narrow && val.length > 14 ? `${val.substring(0, 12)}…` : val)}
           />
           <YAxis
             tick={{ fill: "#64748B", fontSize: 11 }}
@@ -83,14 +87,14 @@ export function StackedBarChart({
           <Bar
             dataKey="Band o'rinlar"
             stackId="dorm"
-            fill="#2563EB" // Primary Blue
+            fill="#3B5BA9" // Primary Blue
             radius={[0, 0, 0, 0]}
             maxBarSize={48}
           />
           <Bar
             dataKey="Bo'sh o'rinlar"
             stackId="dorm"
-            fill="#10B981" // Success Green
+            fill="#4E9A83" // Success Green
             radius={[6, 6, 0, 0]}
             maxBarSize={48}
           />

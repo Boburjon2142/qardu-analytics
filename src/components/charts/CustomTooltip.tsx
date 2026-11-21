@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React from "react";
 import { formatNumber, formatPercentage } from "@/lib/formatters";
@@ -102,7 +102,7 @@ export function CustomTooltip({
             <span className="text-slate-500 flex items-center gap-1.5">
               <span
                 className="w-2.5 h-2.5 rounded-full"
-                style={{ backgroundColor: firstItem.color || "#2563EB" }}
+                style={{ backgroundColor: firstItem.color || "#3B5BA9" }}
               />
               Miqdor:
             </span>

@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React from "react";
 import {
@@ -34,7 +34,7 @@ export function VerticalBarChart<T extends VerticalBarItem = VerticalBarItem>({
   data,
   unit = "nafar",
   height = 280,
-  barColor = "#2563EB",
+  barColor = "#3B5BA9",
   showGrid = true,
 }: VerticalBarChartProps<T>) {
   if (!data || data.length === 0) {

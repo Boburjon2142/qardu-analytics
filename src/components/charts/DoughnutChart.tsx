@@ -1,14 +1,12 @@
-"use client";
+﻿"use client";
 
 import React, { useState } from "react";
 import {
   PieChart,
   Pie,
   Cell,
-  Tooltip,
   ResponsiveContainer,
 } from "recharts";
-import { CustomTooltip } from "./CustomTooltip";
 import { formatNumber, formatPercentage } from "@/lib/formatters";
 
 export interface DoughnutSegment {
@@ -27,21 +25,23 @@ export interface DoughnutChartProps<T extends DoughnutSegment = DoughnutSegment>
   height?: number;
   colors?: string[];
   showLegend?: boolean;
+  /** "stacked": legend below the ring. "side": legend beside the ring on md+ screens. */
+  layout?: "stacked" | "side";
 }
 
 const DEFAULT_PALETTE = [
-  "#2563EB", // Primary Blue
-  "#4F46E5", // Deep Indigo
-  "#06B6D4", // Accent Cyan
-  "#10B981", // Success Green
-  "#F59E0B", // Amber
-  "#EC4899", // Pink
-  "#8B5CF6", // Purple
-  "#14B8A6", // Teal
-  "#F97316", // Orange
-  "#6366F1", // Indigo light
-  "#3B82F6", // Blue light
-  "#0EA5E9", // Sky
+  "#3B5BA9", // Primary Blue
+  "#5B5FA8", // Deep Indigo
+  "#4A9BB0", // Accent Cyan
+  "#4E9A83", // Success Green
+  "#C9954A", // Amber
+  "#B8648A", // Pink
+  "#7C6BB0", // Purple
+  "#4A9C98", // Teal
+  "#C27A4E", // Orange
+  "#6E73B5", // Indigo light
+  "#5F86C2", // Blue light
+  "#5A9CC0", // Sky
 ];
 
 export function DoughnutChart<T extends DoughnutSegment = DoughnutSegment>({
@@ -52,7 +52,9 @@ export function DoughnutChart<T extends DoughnutSegment = DoughnutSegment>({
   height = 260,
   colors = DEFAULT_PALETTE,
   showLegend = true,
+  layout = "stacked",
 }: DoughnutChartProps<T>) {
+  const side = layout === "side";
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
   if (!data || data.length === 0) {
@@ -79,24 +81,38 @@ export function DoughnutChart<T extends DoughnutSegment = DoughnutSegment>({
     unit,
   }));
 
+  const activeItem = activeIndex !== null ? chartData[activeIndex] : null;
+  const activeShare = activeItem
+    ? typeof activeItem.percentage === "number"
+      ? activeItem.percentage
+      : totalSum > 0
+        ? Number(((activeItem.count / totalSum) * 100).toFixed(1))
+        : null
+    : null;
+
   return (
-    <div className="flex flex-col items-center justify-between w-full h-full">
+    <div
+      className={
+        side
+          ? "flex flex-col md:flex-row md:items-center gap-5 w-full flex-1"
+          : "flex flex-col items-center justify-start w-full"
+      }
+    >
       {/* Chart Canvas with Center Text Overlay */}
-      <div className="relative w-full" style={{ height }}>
+      <div
+        className={side ? "relative w-full md:w-[var(--d)] md:shrink-0" : "relative w-full"}
+        style={{ height, ["--d" as string]: `${height}px` }}
+      >
         <ResponsiveContainer width="100%" height="100%">
           <PieChart>
-            <Tooltip
-              content={<CustomTooltip defaultUnit={unit} />}
-              cursor={{ fill: "transparent" }}
-            />
             <Pie
               data={chartData}
               dataKey="value"
               nameKey="name"
               cx="50%"
               cy="50%"
-              innerRadius="65%"
-              outerRadius="88%"
+              innerRadius="56%"
+              outerRadius="94%"
               paddingAngle={2}
               onMouseEnter={(_, index) => setActiveIndex(index)}
               onMouseLeave={() => setActiveIndex(null)}
@@ -116,31 +132,68 @@ export function DoughnutChart<T extends DoughnutSegment = DoughnutSegment>({
           </PieChart>
         </ResponsiveContainer>
 
-        {/* Center label & number inside doughnut */}
-        <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none text-center">
-          <span className="text-[11px] font-medium text-slate-500 uppercase tracking-wider">
-            {centerLabel}
-          </span>
-          <span className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
-            {displayCenterValue}
-          </span>
-          {unit && typeof centerValue !== "string" && (
-            <span className="text-[10px] text-slate-400 font-medium">
-              {unit}
-            </span>
-          )}
+        {/* Center label: shows overall total, or the hovered segment */}
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+          <div className="flex flex-col items-center justify-center text-center w-[96px]">
+            {activeItem ? (
+              <>
+                <span
+                  className="text-[10px] font-medium text-slate-500 leading-[1.15] line-clamp-3 break-words [text-wrap:balance]"
+                  title={activeItem.name}
+                >
+                  {activeItem.name}
+                </span>
+                <span className="mt-0.5 text-lg font-extrabold text-slate-900 tracking-tight tabular-nums">
+                  {formatNumber(activeItem.count)}
+                </span>
+                <span className="text-[10px] font-semibold text-slate-500 tabular-nums">
+                  {activeShare !== null ? formatPercentage(activeShare) : unit}
+                </span>
+              </>
+            ) : (
+              <>
+                <span className="text-[9px] font-medium text-slate-500 uppercase tracking-normal leading-tight">
+                  {centerLabel}
+                </span>
+                <span className="text-xl font-black text-slate-900 tracking-tight tabular-nums">
+                  {displayCenterValue}
+                </span>
+                {unit && typeof centerValue !== "string" && (
+                  <span className="text-[10px] text-slate-400 font-medium">{unit}</span>
+                )}
+              </>
+            )}
+          </div>
         </div>
       </div>
 
       {/* Interactive Legend */}
       {showLegend && (
-        <div className="w-full mt-3 pt-3 border-t border-slate-100 max-h-[120px] overflow-y-auto space-y-1.5 pr-1">
+        <div
+          className={
+            side
+              ? `flex-1 min-w-0 w-full md:border-l md:border-slate-100 md:pl-5 ${
+                chartData.length > 6
+                  ? "space-y-0.5 md:space-y-0 md:columns-2 min-[1700px]:columns-3 md:gap-x-8"
+                  : "space-y-0.5"
+              }`
+              : "w-full mt-4 pt-3 border-t border-slate-100 max-h-[170px] overflow-y-auto space-y-1 pr-1"
+          }
+          style={
+            !side && chartData.length > 6
+              ? {
+                  maskImage: "linear-gradient(to bottom, #000 82%, transparent 100%)",
+                  WebkitMaskImage: "linear-gradient(to bottom, #000 82%, transparent 100%)",
+                }
+              : undefined
+          }
+        >
           {chartData.map((item, idx) => (
             <div
               key={`legend-${item.id || idx}`}
               onMouseEnter={() => setActiveIndex(idx)}
               onMouseLeave={() => setActiveIndex(null)}
-              className={`flex items-center justify-between text-xs py-0.5 px-1.5 rounded-lg transition-colors cursor-pointer ${
+              className={`flex items-center justify-between text-xs py-1 px-1.5 rounded-lg break-inside-avoid transition-colors cursor-pointer ${
                 activeIndex === idx ? "bg-slate-100" : "hover:bg-slate-50"
               }`}
             >

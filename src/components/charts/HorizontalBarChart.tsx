@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useState, useMemo } from "react";
 import {
@@ -43,7 +43,7 @@ export interface HorizontalBarChartProps<T extends HorizontalBarItem = Horizonta
 export function HorizontalBarChart<T extends HorizontalBarItem = HorizontalBarItem>({
   data,
   unit = "nafar",
-  barColor = "#4F46E5",
+  barColor = "#5B5FA8",
   allowSorting = true,
   minHeight = 460,
 }: HorizontalBarChartProps<T>) {

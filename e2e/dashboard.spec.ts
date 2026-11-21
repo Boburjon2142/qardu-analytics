@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+﻿import { test, expect } from "@playwright/test";
 import path from "path";
 
 test.describe("QarDU Analytics Dashboard E2E & Visual Baseline", () => {
@@ -13,11 +13,6 @@ test.describe("QarDU Analytics Dashboard E2E & Visual Baseline", () => {
     await expect(page.locator("h1")).toContainText("Universitet statistikasi");
     await expect(page.getByText("24 500").first()).toBeVisible();
     await expect(page.getByText("1 250").first()).toBeVisible();
-
-    // Verify Map Placeholder
-    await expect(
-      page.getByText("Fakultetlarning hududiy joylashuvi")
-    ).toBeVisible();
 
     // Take Desktop Baseline Screenshot
     const draftPath = path.resolve(

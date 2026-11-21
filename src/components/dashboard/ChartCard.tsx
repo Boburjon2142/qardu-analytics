@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React from "react";
 import { AlertCircle, FileQuestion, RefreshCw } from "lucide-react";
@@ -34,12 +34,12 @@ export function ChartCard({
   return (
     <div
       className={cn(
-        "bg-surface rounded-2xl border border-border p-5 sm:p-6 shadow-card hover:shadow-cardHover transition-shadow duration-200 flex flex-col justify-between overflow-hidden",
+        "bg-surface rounded-2xl border border-slate-200/70 p-3.5 sm:p-4 shadow-card hover:shadow-cardHover transition-shadow duration-200 flex flex-col justify-between overflow-hidden",
         className
       )}
     >
       {/* Card Header */}
-      <div className="flex items-start justify-between gap-3 mb-4">
+      <div className="flex items-start justify-between gap-3 mb-1">
         <div>
           <div className="flex items-center gap-2">
             <h3 className="text-sm sm:text-base font-bold text-slate-900 tracking-tight">
@@ -62,7 +62,7 @@ export function ChartCard({
       </div>
 
       {/* Card Body with States */}
-      <div className="relative flex-1 flex flex-col justify-center min-h-[260px] w-full">
+      <div className="relative flex-1 flex flex-col justify-start w-full">
         {isLoading ? (
           <div className="flex flex-col items-center justify-center py-12 space-y-4 animate-pulse w-full">
             <div className="w-36 h-36 rounded-full border-4 border-slate-200 border-t-primary animate-spin" />

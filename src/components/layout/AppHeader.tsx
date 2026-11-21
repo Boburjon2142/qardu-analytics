@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React from "react";
 import Image from "next/image";
@@ -39,23 +39,7 @@ export function AppHeader({
 
   return (
     <header className="sticky top-0 z-30 w-full bg-surface/95 backdrop-blur-md border-b border-border shadow-subtle transition-all">
-      {/* Top micro banner for university credentials */}
-      <div className="hidden sm:flex items-center justify-between px-4 sm:px-6 py-1 bg-slate-50/80 border-b border-slate-100 text-[11px] text-slate-500 font-medium">
-        <div className="flex items-center gap-2">
-          <span className="w-1.5 h-1.5 rounded-full bg-primary" />
-          <span>Qarshi davlat universiteti rasmiy statistik-analitik portali</span>
-        </div>
-        <div className="flex items-center gap-3">
-          <span>Oliy ta&apos;lim, fan va innovatsiyalar vazirligi</span>
-          <span className="text-slate-300">•</span>
-          <span className="text-emerald-600 font-semibold flex items-center gap-1">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-            Onlayn monitoring
-          </span>
-        </div>
-      </div>
-
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between px-4 sm:px-6 py-3.5 gap-3">
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between px-4 sm:px-6 py-2.5 gap-3">
         {/* Left Section: Mobile Toggle & Brand / Title / Breadcrumb */}
         <div className="flex items-center gap-3">
           <button
@@ -69,10 +53,10 @@ export function AppHeader({
 
           <div className="flex items-center gap-3">
             <div className="hidden sm:flex items-center">
-              <div className="relative w-9 h-9 mr-2">
+              <div className="relative w-[84px] h-12 mr-2">
                 <Image
                   src="/assets/logo-oz-dark-text.svg"
-                  alt="QarDU Logotipi"
+                  alt="QarshiDU Logotipi"
                   fill
                   className="object-contain"
                   priority
@@ -82,33 +66,31 @@ export function AppHeader({
 
             <div>
               {/* Breadcrumbs */}
-              <nav aria-label="Breadcrumb" className="flex items-center gap-1.5 text-xs text-slate-500 font-medium">
-                <span className="hover:text-slate-700">QarDU Analytics</span>
+              <nav aria-label="Breadcrumb" className="flex items-center gap-1.5 text-xs text-slate-500 font-medium whitespace-nowrap">
+                <span className="hover:text-slate-700">QarshiDU Analytics</span>
                 <span className="text-slate-300">/</span>
                 <span className="text-primary font-semibold">Bosh sahifa</span>
               </nav>
 
               {/* Title */}
-              <h1 className="text-lg sm:text-xl font-bold text-slate-900 tracking-tight flex items-center gap-2">
+              <h1 className="text-lg sm:text-xl font-bold text-slate-900 tracking-tight whitespace-nowrap">
                 Universitet statistikasi
-                <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
-                  Ochiq portal
-                </span>
+
               </h1>
             </div>
           </div>
         </div>
 
         {/* Right Section: Controls, Period Selector, Print, Refresh, Language */}
-        <div className="flex items-center flex-wrap gap-2.5 self-end sm:self-center">
+        <div className="flex items-center flex-wrap gap-2.5 self-end lg:self-center">
           {/* Last updated indicator (Desktop) */}
           {lastUpdated && (
             <div
-              className="hidden xl:flex items-center text-xs text-slate-500 mr-1 py-1 px-2.5 rounded-lg bg-slate-50 border border-slate-100"
+              className="hidden xl:flex items-center text-xs text-slate-500 mr-1 py-1 px-2.5 rounded-full bg-slate-50 border border-slate-100"
               title="Ma'lumotlar oxirgi marta yangilangan vaqti"
             >
               <span className="w-2 h-2 rounded-full bg-emerald-500 inline-block mr-1.5 animate-pulse" />
-              <span>{lastUpdated}</span>
+              <span>{lastUpdated.replace(/\s*\([^)]*\)/, "")}</span>
             </div>
           )}
 

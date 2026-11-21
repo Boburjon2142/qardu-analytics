@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useState, useEffect } from "react";
 import { AppSidebar } from "./AppSidebar";
@@ -49,6 +49,8 @@ export function DashboardLayout({
       <AppSidebar
         mobileOpen={mobileOpen}
         onMobileClose={() => setMobileOpen(false)}
+        collapsed={isCollapsed}
+        onCollapsedChange={setIsCollapsed}
       />
 
       {/* Main Content Area */}
@@ -67,7 +69,7 @@ export function DashboardLayout({
           onRefresh={onRefresh}
         />
 
-        <main className="flex-1 p-4 sm:p-6 lg:p-8 max-w-[1700px] w-full mx-auto">
+        <main className="flex-1 p-3 sm:p-4 lg:p-5 max-w-[1700px] w-full mx-auto">
           {children}
         </main>
 
@@ -75,14 +77,6 @@ export function DashboardLayout({
         <footer className="mt-auto border-t border-border bg-white/60 py-4 px-6 text-xs text-slate-500 flex flex-col sm:flex-row items-center justify-between gap-2">
           <div>
             &copy; {new Date().getFullYear()} Qarshi davlat universiteti. Barcha huquqlar himoyalangan.
-          </div>
-          <div className="flex items-center gap-4">
-            <span className="inline-flex items-center gap-1.5 text-slate-600">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-              Tizim holati: Barqaror
-            </span>
-            <span className="text-slate-300">|</span>
-            <span>Platforma versiyasi: v1.0.0</span>
           </div>
         </footer>
       </div>

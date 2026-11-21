@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
@@ -73,10 +73,18 @@ const NAV_ITEMS: NavItem[] = [
 interface AppSidebarProps {
   mobileOpen: boolean;
   onMobileClose: () => void;
+  collapsed?: boolean;
+  onCollapsedChange?: (collapsed: boolean) => void;
 }
 
-export function AppSidebar({ mobileOpen, onMobileClose }: AppSidebarProps) {
-  const [isCollapsed, setIsCollapsed] = useState<boolean>(true);
+export function AppSidebar({
+  mobileOpen,
+  onMobileClose,
+  collapsed,
+  onCollapsedChange,
+}: AppSidebarProps) {
+  const [internalCollapsed, setIsCollapsed] = useState<boolean>(true);
+  const isCollapsed = collapsed ?? internalCollapsed;
   const [mounted, setMounted] = useState<boolean>(false);
 
   useEffect(() => {
@@ -88,11 +96,14 @@ export function AppSidebar({ mobileOpen, onMobileClose }: AppSidebarProps) {
   }, []);
 
   const toggleCollapse = () => {
-    setIsCollapsed((prev) => {
-      const next = !prev;
+    const next = !isCollapsed;
+    setIsCollapsed(next);
+    try {
       localStorage.setItem("qardu_sidebar_collapsed", String(next));
-      return next;
-    });
+    } catch {
+      /* storage unavailable */
+    }
+    onCollapsedChange?.(next);
   };
 
   // Close mobile drawer on Escape key
@@ -128,16 +139,34 @@ export function AppSidebar({ mobileOpen, onMobileClose }: AppSidebarProps) {
           mobileOpen ? "translate-x-0 w-[260px]" : "-translate-x-full lg:translate-x-0"
         )}
       >
+        {/* Collapse / expand toggle on the sidebar edge (desktop) */}
+        <button
+          type="button"
+          onClick={toggleCollapse}
+          className="hidden lg:flex absolute -right-3.5 top-[56px] z-50 items-center justify-center w-7 h-7 rounded-full border border-border bg-white text-slate-500 shadow-card hover:text-primary hover:border-primary/40 transition-colors outline-none focus-visible:ring-2 focus-visible:ring-primary"
+          aria-label={isCollapsed ? "Sidebar-ni kengaytirish" : "Sidebar-ni ixchamlashtirish"}
+          title={isCollapsed ? "Sidebar-ni kengaytirish" : "Sidebar-ni ixchamlashtirish"}
+        >
+          {isCollapsed ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
+        </button>
+
         {/* Brand Header */}
         <div className="flex items-center justify-between h-[70px] px-3.5 border-b border-border">
           <div className="flex items-center gap-3 overflow-hidden">
-            <div className="relative flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600 to-indigo-700 text-white font-bold text-lg shrink-0 shadow-md shadow-blue-500/20">
-              <span className="font-extrabold tracking-tight text-white">Q</span>
+            <div className="relative w-10 h-10 shrink-0 rounded-xl overflow-hidden shadow-sm ring-1 ring-slate-200">
+              <Image
+                src="/assets/logo.png"
+                alt="QarshiDU logotipi"
+                fill
+                sizes="40px"
+                className="object-contain"
+                priority
+              />
             </div>
             {(!isCollapsed || mobileOpen) && (
               <div className="flex flex-col min-w-0">
                 <span className="font-bold text-slate-900 text-sm tracking-tight truncate">
-                  QarDU Analytics
+                  QarshiDU Analytics
                 </span>
                 <span className="text-[11px] text-slate-500 truncate">
                   Ochiq ma&apos;lumotlar
@@ -222,7 +251,7 @@ export function AppSidebar({ mobileOpen, onMobileClose }: AppSidebarProps) {
         <div className="p-2 border-t border-border flex flex-col gap-1">
           {(!isCollapsed || mobileOpen) && (
             <div className="px-2 py-2 mb-1 rounded-xl bg-slate-50 text-[11px] text-slate-500 flex flex-col gap-1">
-              <span className="font-semibold text-slate-700">QarDU Axborot xizmati</span>
+              <span className="font-semibold text-slate-700">QarshiDU Axborot xizmati</span>
               <a
                 href="https://qardu.uz"
                 target="_blank"
@@ -235,22 +264,7 @@ export function AppSidebar({ mobileOpen, onMobileClose }: AppSidebarProps) {
             </div>
           )}
 
-          <button
-            type="button"
-            onClick={toggleCollapse}
-            className="hidden lg:flex items-center justify-center w-full py-2.5 rounded-xl text-slate-500 hover:text-slate-900 hover:bg-slate-100 transition-colors"
-            aria-label={isCollapsed ? "Sidebar-ni kengaytirish" : "Sidebar-ni ixchamlashtirish"}
-            title={isCollapsed ? "Sidebar-ni kengaytirish" : "Sidebar-ni ixchamlashtirish"}
-          >
-            {isCollapsed ? (
-              <ChevronRight className="w-5 h-5" />
-            ) : (
-              <div className="flex items-center gap-2 text-xs font-semibold px-2">
-                <ChevronLeft className="w-4 h-4" />
-                <span>Ixchamlashtirish</span>
-              </div>
-            )}
-          </button>
+
         </div>
       </aside>
     </>

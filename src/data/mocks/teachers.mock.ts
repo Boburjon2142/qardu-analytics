@@ -1,4 +1,4 @@
-import {
+﻿import {
   AcademicTitleData,
   AcademicDegreeData,
   FacultyTeacherData,
@@ -6,16 +6,16 @@ import {
 
 // Sum = 1 250
 export const TEACHERS_BY_TITLE_MOCK: AcademicTitleData[] = [
-  { id: "prof", name: "Professor", count: 75, percentage: 6.0, color: "#4F46E5" },
-  { id: "assoc_prof", name: "Dotsent", count: 345, percentage: 27.6, color: "#2563EB" },
-  { id: "senior_res", name: "Katta ilmiy xodim", count: 95, percentage: 7.6, color: "#06B6D4" },
+  { id: "prof", name: "Professor", count: 75, percentage: 6.0, color: "#5B5FA8" },
+  { id: "assoc_prof", name: "Dotsent", count: 345, percentage: 27.6, color: "#3B5BA9" },
+  { id: "senior_res", name: "Katta ilmiy xodim", count: 95, percentage: 7.6, color: "#4A9BB0" },
   { id: "no_title", name: "Ilmiy unvonsiz (Katta o'qituvchi / Assistent)", count: 735, percentage: 58.8, color: "#94A3B8" },
 ];
 
 // Sum = 1 250
 export const TEACHERS_BY_DEGREE_MOCK: AcademicDegreeData[] = [
-  { id: "dsc", name: "DSc (Fan doktori)", count: 85, percentage: 6.8, color: "#10B981" },
-  { id: "phd", name: "PhD (Falsafa doktori / Fan nomzodi)", count: 465, percentage: 37.2, color: "#2563EB" },
+  { id: "dsc", name: "DSc (Fan doktori)", count: 85, percentage: 6.8, color: "#4E9A83" },
+  { id: "phd", name: "PhD (Falsafa doktori / Fan nomzodi)", count: 465, percentage: 37.2, color: "#3B5BA9" },
   { id: "no_degree", name: "Ilmiy darajasiz", count: 700, percentage: 56.0, color: "#94A3B8" },
 ];
 

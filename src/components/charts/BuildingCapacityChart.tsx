@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React from "react";
 import {
@@ -12,6 +12,7 @@ import {
   Legend,
 } from "recharts";
 import { CustomTooltip } from "./CustomTooltip";
+import { useIsNarrow } from "./useIsNarrow";
 import { BuildingCapacityData } from "@/features/dashboard/types";
 import { formatNumber } from "@/lib/formatters";
 
@@ -26,6 +27,7 @@ export function BuildingCapacityChart({
   unit = "o'rin",
   height = 300,
 }: BuildingCapacityChartProps) {
+  const narrow = useIsNarrow();
   if (!data || data.length === 0) {
     return (
       <div className="flex items-center justify-center h-[300px] text-xs text-slate-400">
@@ -64,6 +66,7 @@ export function BuildingCapacityChart({
             tickLine={false}
             interval={0}
             dy={8}
+            {...(narrow ? { angle: -40, textAnchor: "end" as const, height: 64 } : {})}
             tickFormatter={(val: string) => {
               if (val.length > 16) {
                 return `${val.substring(0, 14)}…`;
@@ -87,13 +90,13 @@ export function BuildingCapacityChart({
           />
           <Bar
             dataKey="Loyiha sig'imi"
-            fill="#4F46E5" // Deep Indigo
+            fill="#5B5FA8" // Deep Indigo
             radius={[6, 6, 0, 0]}
             maxBarSize={36}
           />
           <Bar
             dataKey="Haqiqiy bandlik"
-            fill="#06B6D4" // Accent Cyan
+            fill="#4A9BB0" // Accent Cyan
             radius={[6, 6, 0, 0]}
             maxBarSize={36}
           />
