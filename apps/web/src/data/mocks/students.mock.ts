@@ -8,18 +8,18 @@
 
 // Faculty color palette for distinct elegant visualization
 const FACULTY_COLORS = [
-  "#425B94", // Blue
-  "#C09A5E", // Amber
-  "#5A9684", // Green
-  "#B07088", // Rose
-  "#5A97A6", // Cyan
-  "#B98059", // Orange
-  "#7F72A5", // Purple
-  "#929B5A", // Olive
-  "#97625C", // Brick
-  "#74808F", // Slate
-  "#3F7F8B", // Deep teal
-  "#8A5E8C", // Plum
+  "#3E5BA1", // Blue
+  "#C59752", // Amber
+  "#539883", // Green
+  "#B56989", // Rose
+  "#5099AC", // Cyan
+  "#BE7C52", // Orange
+  "#7D6EAC", // Purple
+  "#8D9A47", // Olive
+  "#9A5E57", // Brick
+  "#707D8E", // Slate
+  "#357E8C", // Deep teal
+  "#8C558E", // Plum
 ];
 
 // Sum = 24 500
@@ -40,9 +40,9 @@ export const STUDENTS_BY_FACULTY_MOCK: FacultyStudentData[] = [
 
 // Sum = 24 500
 export const STUDENTS_BY_LEVEL_MOCK: EducationLevelData[] = [
-  { id: "bachelor", name: "Bakalavriat", count: 22200, percentage: 90.6, color: "#425B94" },
-  { id: "master", name: "Magistratura", count: 2050, percentage: 8.4, color: "#5E6498" },
-  { id: "phd", name: "Doktorantura", count: 250, percentage: 1.0, color: "#5A97A6" },
+  { id: "bachelor", name: "Bakalavriat", count: 22200, percentage: 90.6, color: "#3E5BA1" },
+  { id: "master", name: "Magistratura", count: 2050, percentage: 8.4, color: "#5C61A2" },
+  { id: "phd", name: "Doktorantura", count: 250, percentage: 1.0, color: "#5099AC" },
 ];
 
 // Sum demand = 5 200, provided rate = (4120 / 5200) * 100 = 79.2%

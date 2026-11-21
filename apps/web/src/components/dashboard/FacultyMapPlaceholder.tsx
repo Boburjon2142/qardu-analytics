@@ -62,7 +62,7 @@ export function FacultyMapPlaceholder() {
   return (
     <div className="relative w-full rounded-2xl border border-slate-200/90 bg-white p-6 sm:p-8 shadow-card overflow-hidden">
       {/* Background Architectural Map Matrix */}
-      <div className="absolute inset-0 opacity-[0.035] pointer-events-none bg-[radial-gradient(#425B94_1px,transparent_1px)] [background-size:20px_20px]" />
+      <div className="absolute inset-0 opacity-[0.035] pointer-events-none bg-[radial-gradient(#3E5BA1_1px,transparent_1px)] [background-size:20px_20px]" />
 
       {/* Header Info */}
       <div className="relative z-10 flex flex-col items-center justify-center text-center max-w-2xl mx-auto mb-6">

@@ -30,18 +30,18 @@ export interface DoughnutChartProps<T extends DoughnutSegment = DoughnutSegment>
 }
 
 const DEFAULT_PALETTE = [
-  "#425B94", // Primary Blue
-  "#5E6498", // Deep Indigo
-  "#5A97A6", // Accent Cyan
-  "#5A9684", // Success Green
-  "#C09A5E", // Amber
-  "#B07088", // Pink
-  "#7F72A5", // Purple
-  "#5A9791", // Teal
-  "#B98059", // Orange
-  "#7377A8", // Indigo light
-  "#6A88B3", // Blue light
-  "#6A98B2", // Sky
+  "#3E5BA1", // Primary Blue
+  "#5C61A2", // Deep Indigo
+  "#5099AC", // Accent Cyan
+  "#539883", // Success Green
+  "#C59752", // Amber
+  "#B56989", // Pink
+  "#7D6EAC", // Purple
+  "#509A95", // Teal
+  "#BE7C52", // Orange
+  "#7075B0", // Indigo light
+  "#6387BC", // Blue light
+  "#609ABA", // Sky
 ];
 
 export function DoughnutChart<T extends DoughnutSegment = DoughnutSegment>({

@@ -43,7 +43,7 @@ export default function DashboardPage() {
           name: "Ta'minlangan",
           count: students.dormitorySupply.providedCount,
           percentage: students.dormitorySupply.providedRate,
-          color: "#5A9684",
+          color: "#539883",
         },
         {
           id: "unprovided",
@@ -52,7 +52,7 @@ export default function DashboardPage() {
           percentage: Number(
             (100 - students.dormitorySupply.providedRate).toFixed(1)
           ),
-          color: "#B06470",
+          color: "#B95E6D",
         },
       ]
     : [];
@@ -194,7 +194,7 @@ export default function DashboardPage() {
               <VerticalBarChart
                 data={students?.byType ?? []}
                 unit="nafar"
-                barColor="#425B94"
+                barColor="#3E5BA1"
                 height={250}
               />
             </ChartCard>
@@ -210,7 +210,7 @@ export default function DashboardPage() {
               <VerticalBarChart
                 data={students?.byCourse ?? []}
                 unit="nafar"
-                barColor="#5E6498"
+                barColor="#5C61A2"
                 height={250}
               />
             </ChartCard>
@@ -342,7 +342,7 @@ export default function DashboardPage() {
                 })) ?? []
               }
               unit="nafar"
-              barColor="#5E6498"
+              barColor="#5C61A2"
               allowSorting={true}
               minHeight={450}
             />
