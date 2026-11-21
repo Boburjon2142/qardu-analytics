@@ -1,6 +1,6 @@
 # apps/api — Django + DRF
 
-Status: Phase 2.1 (identity foundation). Custom email-login `User`, DB sessions, CSRF, login
+Status: Phase 2.2 (identity foundation + effective-dated organization registry). Custom email-login `User`, DB sessions, CSRF, login
 throttling, append-only `AuditEvent`, deny-by-default `policy` shell. No roles, organization or
 RBAC yet (2.2–2.4).
 
@@ -23,6 +23,10 @@ powershell -ExecutionPolicy Bypass -File scripts\dev-db-setup.ps1
 No self-registration and no default accounts. Create one interactively (password prompt, policy
 validated, never an argument): `python manage.py createuser --email a@b.uz --full-name "Name"`.
 
+## Synthetic demo data
+`python manage.py seed_org_demo` creates a **fictional** 6-unit hierarchy with two dated structural
+changes (idempotent). It is not real university data; running it on the dev database needs approval.
+
 ## Migrations
 Applying migrations to the dev database needs the owner's explicit approval (CLAUDE.md §7).
 `pytest` creates and drops a temporary `test_*` database; the DB role needs `CREATEDB`.
@@ -38,6 +42,8 @@ $env:DJANGO_SECRET_KEY="x"; .\.venv\Scripts\python manage.py check
 - `GET auth/csrf/` — sets the CSRF cookie (send it back as `X-CSRFToken`).
 - `POST auth/login/` — `{email, password}`; CSRF + throttled (5/min per account, 30/min per IP).
 - `POST auth/logout/`, `GET auth/me/` — session required.
+- `GET org/units/?as_of=YYYY-MM-DD`, `GET org/units/<id>/`, `GET org/units/<id>/history/` — read-only,
+  scoped through `policy` (deny-all until roles arrive in 2.3, so callers currently see nothing).
 - `GET health/` — liveness, no DB.
 - `GET health/ready/` — PostgreSQL reachability (503 without details on failure).
 - `GET version/` — API and app version.

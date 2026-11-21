@@ -27,10 +27,12 @@ INSTALLED_APPS = [
     "django.contrib.contenttypes",
     "django.contrib.auth",
     "django.contrib.sessions",
+    "django.contrib.postgres",
     "rest_framework",
     "apps.core",
     "apps.accounts",
     "apps.audit",
+    "apps.organization",
 ]
 
 MIDDLEWARE = [
@@ -94,6 +96,8 @@ REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": ["rest_framework.permissions.IsAuthenticated"],
     "DEFAULT_RENDERER_CLASSES": ["rest_framework.renderers.JSONRenderer"],
     "DEFAULT_PARSER_CLASSES": ["rest_framework.parsers.JSONParser"],
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
+    "PAGE_SIZE": 50,
     # 0 = trust only REMOTE_ADDR; X-Forwarded-For is spoofable. Revisit behind Nginx.
     "NUM_PROXIES": 0,
     # Proposed values (P2-5). The per-IP limit is higher because many users share a NAT.

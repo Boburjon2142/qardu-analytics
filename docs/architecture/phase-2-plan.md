@@ -1,6 +1,6 @@
 # Phase 2 rejasi — Identity + M01 (ERD va ruxsat matritsasi)
 
-> **Maqom:** P2-1…P2-8 qarorlari egasi tomonidan **tasdiqlangan (2026-11-21)**; reja qolgani PROPOSED. Milestone 2.1 implementatsiya qilingan (migratsiya dev bazaga hali qo'llanmagan). Manba: TT v4.0 (loyiha, imzosiz), `erd.md`, `permission-matrix.md`.
+> **Maqom:** P2-1…P2-8 qarorlari egasi tomonidan **tasdiqlangan (2026-11-21)**; reja qolgani PROPOSED. Milestone 2.1 va 2.2 implementatsiya qilingan va dev bazaga qo'llangan (2.2: tashkiliy tuzilma tarixi; scope'li o'qish rollar bilan to'liq 2.3 da sinaladi). Manba: TT v4.0 (loyiha, imzosiz), `erd.md`, `permission-matrix.md`.
 > Phase 2 doirasi: autentifikatsiya/sessiya, foydalanuvchilar, muddatli rollar, tashkiliy tuzilma tarixi, tuzilma o'zgarishi taklifi/tasdig'i, backend ruxsat tekshiruvi, audit skeleti.
 > **Doiradan tashqari:** formalar, natijalar, dalil fayllari, izohlar, analitika, nashr, bildirishnomalar (Phase 3–5).
 > Barcha ma'lumot **sintetik**. Haqiqiy tuzilma/shaxslar (B1–B4) OPEN.
