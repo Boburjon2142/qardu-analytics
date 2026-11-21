@@ -9,6 +9,8 @@ import {
   Building2,
   Users,
   FlaskConical,
+  BarChart3,
+  ClipboardList,
   ChevronLeft,
   ChevronRight,
   X,
@@ -36,12 +38,28 @@ const NAV_ITEMS: NavItem[] = [
     shortcut: "1",
   },
   {
+    id: "indicators",
+    label: "Ko'rsatkichlar",
+    href: "#",
+    icon: BarChart3,
+    badge: "Tez kunda",
+    shortcut: "2",
+  },
+  {
+    id: "admission",
+    label: "Qabul",
+    href: "#",
+    icon: ClipboardList,
+    badge: "Tez kunda",
+    shortcut: "3",
+  },
+  {
     id: "students",
     label: "Bo'limlar",
     href: "#",
     icon: GraduationCap,
     badge: "Tez kunda",
-    shortcut: "2",
+    shortcut: "4",
   },
   {
     id: "faculties",
@@ -49,7 +67,7 @@ const NAV_ITEMS: NavItem[] = [
     href: "#",
     icon: Building2,
     badge: "Tez kunda",
-    shortcut: "3",
+    shortcut: "5",
   },
   {
     id: "teachers",
@@ -57,7 +75,7 @@ const NAV_ITEMS: NavItem[] = [
     href: "#",
     icon: Users,
     badge: "Tez kunda",
-    shortcut: "4",
+    shortcut: "6",
   },
   {
     id: "research",
@@ -65,7 +83,7 @@ const NAV_ITEMS: NavItem[] = [
     href: "#",
     icon: FlaskConical,
     badge: "Tez kunda",
-    shortcut: "5",
+    shortcut: "7",
   },
 ];
 

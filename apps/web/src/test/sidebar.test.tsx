@@ -8,10 +8,12 @@ describe("AppSidebar Component", () => {
     localStorage.clear();
   });
 
-  it("renders all 5 required navigation items", () => {
+  it("renders all 7 required navigation items", () => {
     render(<AppSidebar mobileOpen={false} onMobileClose={() => {}} />);
 
     expect(screen.getByText("Universitet")).toBeInTheDocument();
+    expect(screen.getByText("Ko'rsatkichlar")).toBeInTheDocument();
+    expect(screen.getByText("Qabul")).toBeInTheDocument();
     expect(screen.getByText("Bo'limlar")).toBeInTheDocument();
     expect(screen.getByText("Fakultetlar")).toBeInTheDocument();
     expect(screen.getByText("Bitiruvchilar")).toBeInTheDocument();
