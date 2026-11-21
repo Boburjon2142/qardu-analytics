@@ -42,10 +42,29 @@ jobs:
     defaults:
       run:
         working-directory: apps/api
+    services:
+      postgres:
+        image: postgres:18
+        env:
+          POSTGRES_DB: qardu_analytics
+          POSTGRES_USER: ci
+          POSTGRES_PASSWORD: ci-only-not-a-secret
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U ci -d qardu_analytics"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
     env:
       # Throwaway values for CI only; real secrets never belong in this file.
       DJANGO_SECRET_KEY: ci-only-not-a-secret
       DJANGO_SETTINGS_MODULE: config.settings.test
+      POSTGRES_DB: qardu_analytics
+      POSTGRES_USER: ci
+      POSTGRES_PASSWORD: ci-only-not-a-secret
+      POSTGRES_HOST: localhost
+      POSTGRES_PORT: "5432"
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-python@v7

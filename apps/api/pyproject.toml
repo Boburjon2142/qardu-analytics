@@ -5,10 +5,11 @@ testpaths = ["apps"]
 
 [tool.ruff]
 line-length = 100
+extend-exclude = ["**/migrations/0001_initial.py"]
 target-version = "py314"
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "B", "UP", "S"]
 
 [tool.ruff.lint.per-file-ignores]
-"**/tests/**" = ["S101"]
+"**/tests/**" = ["S101", "S105", "S106"]

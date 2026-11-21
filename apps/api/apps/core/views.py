@@ -32,3 +32,10 @@ def ready(request):
 @permission_classes([AllowAny])
 def version(request):
     return Response({"api_version": "v1", "app_version": settings.APP_VERSION})
+
+
+def csrf_failure(request, reason=""):
+    """JSON 403 for CSRF failures; the reason is deliberately not echoed."""
+    from django.http import JsonResponse
+
+    return JsonResponse({"detail": "CSRF verification failed.", "code": "csrf_failed"}, status=403)
