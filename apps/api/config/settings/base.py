@@ -99,7 +99,7 @@ REST_FRAMEWORK = {
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
     "PAGE_SIZE": 50,
     # 0 = trust only REMOTE_ADDR; X-Forwarded-For is spoofable. Revisit behind Nginx.
-    "NUM_PROXIES": 0,
+    "NUM_PROXIES": int(os.environ.get("DRF_NUM_PROXIES", "0")),
     # Proposed values (P2-5). The per-IP limit is higher because many users share a NAT.
     "DEFAULT_THROTTLE_RATES": {"login_account": "5/min", "login_ip": "30/min"},
 }

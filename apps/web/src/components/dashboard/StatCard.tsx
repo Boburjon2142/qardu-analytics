@@ -103,8 +103,8 @@ export function StatCard({
                 </span>
               )}
             </div>
-            <div className="mt-1 flex items-baseline gap-2">
-              <span className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900 tabular-nums">
+            <div className="mt-1 flex flex-wrap items-baseline gap-x-2">
+              <span className="whitespace-nowrap text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900 tabular-nums">
                 {formatNumber(value)}
               </span>
               {unit && (

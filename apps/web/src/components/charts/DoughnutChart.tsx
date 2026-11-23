@@ -61,7 +61,8 @@ export function DoughnutChart<T extends DoughnutSegment = DoughnutSegment>({
   const big = variant === "presentation";
   const clamp = (v: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, v));
   const centerWidth = big ? Math.round(height * 0.5) : 96;
-  const valueSize = clamp(Math.round(height * 0.1), 22, 60);
+  // The value ("24 500") must fit the ring's hole on one line: ~3.6em wide, hole ~0.55 of height.
+  const valueSize = clamp(Math.round(height * 0.09), 18, 56);
   const labelSize = clamp(Math.round(height * 0.03), 11, 17);
   const legendSize = clamp(Math.round(height * 0.04), 14, 17);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
@@ -157,7 +158,7 @@ export function DoughnutChart<T extends DoughnutSegment = DoughnutSegment>({
                   {activeItem.name}
                 </span>
                 <span
-                  className="mt-0.5 text-lg font-extrabold text-slate-900 tracking-tight tabular-nums"
+                  className="mt-0.5 whitespace-nowrap text-lg font-extrabold text-slate-900 tracking-tight tabular-nums"
                   style={big ? { fontSize: valueSize, lineHeight: 1.1 } : undefined}
                 >
                   {formatNumber(activeItem.count)}
@@ -178,7 +179,7 @@ export function DoughnutChart<T extends DoughnutSegment = DoughnutSegment>({
                   {centerLabel}
                 </span>
                 <span
-                  className="text-xl font-black text-slate-900 tracking-tight tabular-nums"
+                  className="whitespace-nowrap text-xl font-black text-slate-900 tracking-tight tabular-nums"
                   style={big ? { fontSize: valueSize, lineHeight: 1.1 } : undefined}
                 >
                   {displayCenterValue}

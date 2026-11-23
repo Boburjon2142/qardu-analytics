@@ -1,0 +1,17 @@
+[Unit]
+Description=QarDU Analytics web (Next.js standalone)
+After=network.target
+
+[Service]
+User=qardu
+Group=qardu
+WorkingDirectory=/var/www/qardu/web
+Environment=NODE_ENV=production
+Environment=PORT=3100
+Environment=HOSTNAME=127.0.0.1
+ExecStart=/usr/bin/node server.js
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target

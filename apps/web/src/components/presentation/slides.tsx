@@ -180,8 +180,8 @@ function BigStat({ card, value }: { card: KpiCardConfig; value: number }) {
           <Icon className="h-7 w-7 sm:h-8 sm:w-8" aria-hidden="true" />
         </span>
       </div>
-      <p className="flex items-baseline gap-3">
-        <span className="text-6xl font-extrabold leading-none tracking-tight text-slate-900 tabular-nums sm:text-7xl xl:text-[96px]">
+      <p className="flex flex-wrap items-baseline gap-x-3">
+        <span className="whitespace-nowrap text-6xl font-extrabold leading-none tracking-tight text-slate-900 tabular-nums sm:text-7xl xl:text-[96px]">
           {formatNumber(value)}
         </span>
         <span className="text-xl font-semibold text-slate-500 sm:text-2xl">{card.unit}</span>
