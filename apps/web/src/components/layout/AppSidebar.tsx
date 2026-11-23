@@ -4,19 +4,21 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import {
-  LayoutDashboard,
-  GraduationCap,
-  Building2,
-  Users,
-  FlaskConical,
-  BarChart3,
-  ClipboardList,
   ChevronLeft,
   ChevronRight,
   X,
   ExternalLink,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import {
+  UniversityIcon,
+  StatisticsIcon,
+  DepartmentsIcon,
+  FacultiesIcon,
+  GraduatesIcon,
+  ResearchIcon,
+  AdmissionsIcon,
+} from "@/components/icons";
 
 export interface NavItem {
   id: string;
@@ -33,7 +35,7 @@ const NAV_ITEMS: NavItem[] = [
     id: "dashboard",
     label: "Universitet",
     href: "/",
-    icon: LayoutDashboard,
+    icon: UniversityIcon,
     isActive: true,
     shortcut: "1",
   },
@@ -41,7 +43,7 @@ const NAV_ITEMS: NavItem[] = [
     id: "indicators",
     label: "Ko'rsatkichlar",
     href: "#",
-    icon: BarChart3,
+    icon: StatisticsIcon,
     badge: "Tez kunda",
     shortcut: "2",
   },
@@ -49,7 +51,7 @@ const NAV_ITEMS: NavItem[] = [
     id: "students",
     label: "Bo'limlar",
     href: "#",
-    icon: GraduationCap,
+    icon: DepartmentsIcon,
     badge: "Tez kunda",
     shortcut: "3",
   },
@@ -57,7 +59,7 @@ const NAV_ITEMS: NavItem[] = [
     id: "faculties",
     label: "Fakultetlar",
     href: "#",
-    icon: Building2,
+    icon: FacultiesIcon,
     badge: "Tez kunda",
     shortcut: "4",
   },
@@ -65,7 +67,7 @@ const NAV_ITEMS: NavItem[] = [
     id: "teachers",
     label: "Bitiruvchilar",
     href: "#",
-    icon: Users,
+    icon: GraduatesIcon,
     badge: "Tez kunda",
     shortcut: "5",
   },
@@ -73,7 +75,7 @@ const NAV_ITEMS: NavItem[] = [
     id: "research",
     label: "Ilmiy faoliyat",
     href: "#",
-    icon: FlaskConical,
+    icon: ResearchIcon,
     badge: "Tez kunda",
     shortcut: "6",
   },
@@ -81,7 +83,7 @@ const NAV_ITEMS: NavItem[] = [
     id: "admission",
     label: "Qabul",
     href: "#",
-    icon: ClipboardList,
+    icon: AdmissionsIcon,
     badge: "Tez kunda",
     shortcut: "7",
   },
@@ -168,10 +170,10 @@ export function AppSidebar({
         {/* Brand Header */}
         <div className="flex items-center justify-between h-[70px] px-3.5 border-b border-border">
           <div className="flex items-center gap-3 overflow-hidden">
-            <div className="relative w-10 h-10 shrink-0 rounded-xl overflow-hidden shadow-sm ring-1 ring-slate-200">
+            <div className="relative w-10 h-10 shrink-0">
               <Image
-                src="/assets/logo.png"
-                alt="QarshiDU logotipi"
+                src="/assets/qardu-analytics-logo.svg"
+                alt="QarDU Analytics logotipi"
                 fill
                 sizes="40px"
                 className="object-contain"
@@ -228,7 +230,7 @@ export function AppSidebar({
                 >
                   <Icon
                     className={cn(
-                      "w-5 h-5 shrink-0 transition-transform duration-150",
+                      "w-[22px] h-[22px] shrink-0 transition-transform duration-150",
                       isItemActive ? "text-white" : "text-slate-500 group-hover:text-slate-700"
                     )}
                   />
