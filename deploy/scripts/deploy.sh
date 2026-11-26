@@ -139,7 +139,11 @@ ACTIVE=$(readlink -f "$APP_ROOT/current")
 find "$APP_ROOT/releases" -mindepth 1 -maxdepth 1 -type d | sort -r | tail -n +"$((KEEP_RELEASES + 1))" |
     while read -r old; do [[ $old == "$ACTIVE" ]] || rm -rf -- "$old"; done
 
-curl -fsS -o /dev/null "https://$DOMAIN/api/v1/health/" \
-    && echo "public check OK: https://$DOMAIN" \
-    || echo "WARNING: https://$DOMAIN is not reachable from this host (DNS/TLS/firewall?)"
+# Must be OUR API answering: no redirects followed, and the exact health payload.
+if curl -sS --max-redirs 0 --max-time 10 "https://$DOMAIN/api/v1/health/" 2>/dev/null \
+        | grep -q '"status":"ok"'; then
+    echo "public check OK: https://$DOMAIN"
+else
+    echo "WARNING: https://$DOMAIN does not reach this app yet (front proxy/DNS/TLS?)"
+fi
 log "Deployed ${COMMIT:0:7}"
