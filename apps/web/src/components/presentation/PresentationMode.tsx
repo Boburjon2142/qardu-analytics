@@ -4,6 +4,8 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import Image from "next/image";
 import { ChevronLeft, ChevronRight, Pause, Play, X } from "lucide-react";
 import type { DashboardDataset } from "@/features/dashboard/types";
+import { SampleDataNotice } from "@/components/layout/SampleDataNotice";
+import { USES_SAMPLE_DATA } from "@/features/dashboard/services/dashboardRepository";
 import { cn } from "@/lib/utils";
 import { exitFullscreen, isFullscreen } from "./fullscreen";
 import { SLIDES, type SlideContext } from "./slides";
@@ -217,14 +219,17 @@ export function PresentationMode({ data, periodLabel, onClose }: PresentationMod
             {slide.title}
           </h2>
         </div>
-        <Image
-          src="/assets/logo-oz-dark-text.svg"
-          alt="QarshiDU logotipi"
-          width={84}
-          height={48}
-          className="hidden shrink-0 sm:block"
-          priority
-        />
+        <div className="flex shrink-0 items-center gap-3">
+          {USES_SAMPLE_DATA && <SampleDataNotice variant="badge" />}
+          <Image
+            src="/assets/logo-oz-dark-text.svg"
+            alt="QarshiDU logotipi"
+            width={84}
+            height={48}
+            className="hidden shrink-0 sm:block"
+            priority
+          />
+        </div>
       </header>
       {slide.render(ctx)}
     </div>

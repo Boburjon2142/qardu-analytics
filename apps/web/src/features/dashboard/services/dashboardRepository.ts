@@ -3,10 +3,13 @@ import { getDatasetByPeriod } from "@/data/mocks/dashboard.mock";
 import { DashboardAdapter, IDashboardAdapter } from "../adapters/dashboardAdapter";
 
 export interface IDashboardRepository {
+  /** True when the numbers are synthetic samples, not official university statistics. */
+  readonly isSampleData: boolean;
   getDashboardData(period: ReportingPeriod): Promise<DashboardDataset>;
 }
 
 export class MockDashboardRepository implements IDashboardRepository {
+  readonly isSampleData = true;
   private adapter: IDashboardAdapter;
 
   constructor(adapter: IDashboardAdapter = new DashboardAdapter()) {
@@ -27,3 +30,6 @@ export class MockDashboardRepository implements IDashboardRepository {
  * without touching any UI component!
  */
 export const dashboardRepository: IDashboardRepository = new MockDashboardRepository();
+
+/** Drives the "Sinov ma'lumotlari" notice; it disappears once a real repository is wired in. */
+export const USES_SAMPLE_DATA = dashboardRepository.isSampleData;

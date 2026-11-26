@@ -3,6 +3,8 @@
 import React, { useState, useEffect } from "react";
 import { AppSidebar } from "./AppSidebar";
 import { AppHeader } from "./AppHeader";
+import { SampleDataNotice } from "./SampleDataNotice";
+import { USES_SAMPLE_DATA } from "@/features/dashboard/services/dashboardRepository";
 import { ReportingPeriod } from "@/features/dashboard/types";
 import { cn } from "@/lib/utils";
 
@@ -64,6 +66,8 @@ export function DashboardLayout({
           isCollapsed ? "lg:ml-[72px]" : "lg:ml-[240px]"
         )}
       >
+        {USES_SAMPLE_DATA && <SampleDataNotice />}
+
         <AppHeader
           onMobileMenuOpen={() => setMobileOpen(true)}
           period={period}
