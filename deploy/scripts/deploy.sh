@@ -51,6 +51,10 @@ healthy() {
 }
 
 command -v "$PYTHON" >/dev/null || die "$PYTHON not found; run deploy/scripts/install-python.sh."
+# Resolve to the real interpreter so release venvs never point through /root or a shim.
+PYTHON_BIN=$(readlink -f "$(command -v "$PYTHON")")
+runuser -u qardu -- "$PYTHON_BIN" -c 'import venv' 2>/dev/null \
+    || die "user qardu cannot run $PYTHON_BIN; re-run deploy/scripts/install-python.sh."
 if (( $(awk '/MemAvailable/ {print int($2/1024)}' /proc/meminfo) < 1500 )); then
     echo "WARNING: less than 1.5 GB RAM available; the Next.js build may fail or slow other sites."
 fi
@@ -69,7 +73,7 @@ rsync -a --delete \
     --exclude '.venv/' --exclude '.env' --exclude '__pycache__/' \
     --exclude '.pytest_cache/' --exclude '.ruff_cache/' \
     "$SRC/apps/api/" "$RELEASE/api/"
-"$PYTHON" -m venv "$RELEASE/api/.venv"
+"$PYTHON_BIN" -m venv "$RELEASE/api/.venv"
 "$RELEASE/api/.venv/bin/pip" install --quiet --upgrade pip
 "$RELEASE/api/.venv/bin/pip" install --quiet -r "$RELEASE/api/requirements/prod.txt"
 "$RELEASE/api/.venv/bin/python" -m compileall -q "$RELEASE/api/apps" "$RELEASE/api/config"
