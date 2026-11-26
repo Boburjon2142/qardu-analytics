@@ -20,7 +20,6 @@ if [[ ! -f /etc/letsencrypt/live/$DOMAIN/fullchain.pem ]]; then
     cat >"$SITE" <<NGINX
 server {
     listen 80;
-    listen [::]:80;
     server_name $DOMAIN;
     location /.well-known/acme-challenge/ { root /var/www/certbot; }
     location / { return 404; }

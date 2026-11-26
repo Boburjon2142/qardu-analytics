@@ -21,7 +21,13 @@ Internet ──HTTPS──> Nginx :443 ──/api/──> gunicorn (Django)  127
 
 ## 0. Talablar
 
-- Ubuntu 22.04/24.04, Python ≥ 3.12, Node.js ≥ 20 (tavsiya 24 LTS), 2 GB+ RAM (Next build uchun).
+- Ubuntu 20.04/22.04/24.04, Node.js ≥ 20, PostgreSQL ≥ 14, Nginx ≥ 1.18, certbot, 2 GB+ bo'sh RAM
+  (Next build uchun).
+- Python 3.14 (CI bilan bir xil). Tizim Python'i eski bo'lsa (20.04 da 3.8),
+  `scripts/install-python.sh` uni `/opt/python` ga alohida o'rnatadi. Bunda tizimdagi `python3`
+  va boshqa saytlarga tegilmaydi.
+- Skriptlar PostgreSQL va Nginx'ni **o'rnatmaydi va yangilamaydi**, chunki umumiy serverda
+  boshqa saytlar ham ularga tayanadi.
 - DNS: `stat.qarshidu.uz` uchun **A yozuvi** server IP manziliga yo'naltirilgan (tekshirish:
   `dig +short stat.qarshidu.uz`).
 - Firewall: 80 va 443 portlar ochiq; 8100, 3100 va 5432 tashqariga **ochilmaydi**.
@@ -34,6 +40,9 @@ Internet ──HTTPS──> Nginx :443 ──/api/──> gunicorn (Django)  127
 # 1) Kodni olish
 sudo git clone https://github.com/Boburjon2142/qardu-analytics.git /var/www/qardu/src
 cd /var/www/qardu/src
+
+# 1a) Python 3.14 (tizimda python3.14 bo'lmasa; uv orqali /opt/python ga)
+sudo bash deploy/scripts/install-python.sh
 
 # 2) Tizimni tayyorlash. Birinchi ishga tushirishda /etc/qardu/api.env yaratadi va to'xtaydi.
 sudo bash deploy/scripts/server-setup.sh

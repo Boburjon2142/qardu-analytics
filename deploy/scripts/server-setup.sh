@@ -1,13 +1,16 @@
 #!/usr/bin/env bash
-# One-time server preparation for QarDU Analytics (Ubuntu 22.04/24.04). Idempotent.
+# One-time server preparation for QarDU Analytics (Ubuntu 20.04/22.04/24.04). Idempotent.
 # Run from a checkout of the repository:  sudo bash deploy/scripts/server-setup.sh
 #
-# What it does: system packages, service user, directories, /etc/qardu/api.env skeleton,
-# PostgreSQL role + database (no superuser/CREATEDB), systemd units. It does NOT deploy code,
-# obtain certificates or touch other Nginx sites.
+# What it does: installs only *missing* basic tools, service user, directories,
+# /etc/qardu/api.env skeleton, PostgreSQL role + database (no superuser/CREATEDB), systemd units.
+# It does NOT install or upgrade PostgreSQL/Nginx (shared hosts may run other sites on them),
+# deploy code, obtain certificates or touch other Nginx sites.
+# Old system Python (Ubuntu 20.04)? Run deploy/scripts/install-python.sh first.
 set -Eeuo pipefail
 
 APP_ROOT=/var/www/qardu
+PYTHON=${PYTHON:-python3.14}
 ENV_FILE=/etc/qardu/api.env
 REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 
@@ -16,12 +19,21 @@ die() { printf 'ERROR: %s\n' "$*" >&2; exit 1; }
 
 [[ $EUID -eq 0 ]] || die "run as root (sudo)."
 
-log "System packages"
-apt-get update -q
-apt-get install -y -q nginx postgresql python3 python3-venv git rsync curl certbot
+log "Prerequisites"
+for tool in nginx psql certbot; do
+    command -v "$tool" >/dev/null || die "$tool is not installed. Install it deliberately (on a
+shared host, check which version the other sites use) and re-run."
+done
+(( $(psql --version | grep -oE '[0-9]+' | head -1) >= 14 )) || die "PostgreSQL >= 14 is required."
+MISSING=()
+for tool in git rsync curl; do command -v "$tool" >/dev/null || MISSING+=("$tool"); done
+if (( ${#MISSING[@]} )); then
+    apt-get update -q && apt-get install -y -q "${MISSING[@]}"
+fi
 
-PY_OK=$(python3 -c 'import sys; print(int(sys.version_info >= (3, 12)))')
-[[ $PY_OK == 1 ]] || die "Python >= 3.12 is required (Django 6.1). Found: $(python3 --version)"
+command -v "$PYTHON" >/dev/null || die "$PYTHON not found. Run deploy/scripts/install-python.sh."
+PY_OK=$("$PYTHON" -c 'import sys; print(int(sys.version_info >= (3, 12)))')
+[[ $PY_OK == 1 ]] || die "Python >= 3.12 is required (Django 6.1). Found: $("$PYTHON" --version)"
 
 if ! command -v node >/dev/null || (( $(node -p 'process.versions.node.split(".")[0]') < 20 )); then
     die "Node.js >= 20 (recommended 24 LTS) is required. Install it from https://nodejs.org or

@@ -18,7 +18,7 @@ ENV_FILE=/etc/qardu/api.env
 BACKUP_DIR=/var/backups/qardu
 REPO_URL=${REPO_URL:-https://github.com/Boburjon2142/qardu-analytics.git}
 DOMAIN=${DOMAIN:-stat.qarshidu.uz}
-PYTHON=${PYTHON:-python3}
+PYTHON=${PYTHON:-python3.14}
 KEEP_RELEASES=${KEEP_RELEASES:-5}
 REF=${1:-origin/main}
 
@@ -49,6 +49,11 @@ healthy() {
     done
     return 1
 }
+
+command -v "$PYTHON" >/dev/null || die "$PYTHON not found; run deploy/scripts/install-python.sh."
+if (( $(awk '/MemAvailable/ {print int($2/1024)}' /proc/meminfo) < 1500 )); then
+    echo "WARNING: less than 1.5 GB RAM available; the Next.js build may fail or slow other sites."
+fi
 
 log "Source ($REF)"
 [[ -d $SRC/.git ]] || git clone --quiet "$REPO_URL" "$SRC"
