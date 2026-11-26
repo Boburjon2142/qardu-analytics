@@ -24,7 +24,7 @@ def _as_of(request) -> date:
 
 def _visible_versions(request, on: date):
     # Every read goes through the central policy; no role checks live in views.
-    return policy.scope_queryset(request.user, versions_as_of(on))
+    return policy.scope_queryset(request.user, versions_as_of(on), on=on)
 
 
 class UnitListView(generics.ListAPIView):
@@ -49,13 +49,19 @@ class UnitDetailView(generics.RetrieveAPIView):
 
 
 class UnitHistoryView(generics.ListAPIView):
-    """All versions of a unit the caller may see today, oldest first."""
+    """All versions of a unit in the caller's scope today, oldest first.
+
+    Breadcrumb ancestors are readable in the tree but their history is not (policy "org.history").
+    """
 
     serializer_class = UnitVersionSerializer
 
     def get_queryset(self):
         pk = self.kwargs["pk"]
-        if not _visible_versions(self.request, timezone.localdate()).filter(unit_id=pk).exists():
+        today = timezone.localdate()
+        if not versions_as_of(today).filter(unit_id=pk).exists() or not policy.can(
+            self.request.user, "org.history", pk, on=today
+        ):
             raise Http404
         return (
             OrganizationUnitVersion.objects.filter(unit_id=pk)

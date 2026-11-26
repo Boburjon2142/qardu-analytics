@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     "apps.accounts",
     "apps.audit",
     "apps.organization",
+    "apps.access",
 ]
 
 MIDDLEWARE = [

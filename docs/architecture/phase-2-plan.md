@@ -1,6 +1,6 @@
 # Phase 2 rejasi — Identity + M01 (ERD va ruxsat matritsasi)
 
-> **Maqom:** P2-1…P2-8 qarorlari egasi tomonidan **tasdiqlangan (2026-11-21)**; reja qolgani PROPOSED. Milestone 2.1 va 2.2 implementatsiya qilingan va dev bazaga qo'llangan (2.2: tashkiliy tuzilma tarixi; scope'li o'qish rollar bilan to'liq 2.3 da sinaladi). Manba: TT v4.0 (loyiha, imzosiz), `erd.md`, `permission-matrix.md`.
+> **Maqom:** P2-1…P2-8 qarorlari egasi tomonidan **tasdiqlangan (2026-11-21)**; reja qolgani PROPOSED. Milestone 2.1 va 2.2 implementatsiya qilingan va dev bazaga qo'llangan. **2.3 implementatsiya qilingan va test bazada sinalgan (2026-11-26); `access` migratsiyalarini dev bazaga qo'llash egasining ruxsatini kutmoqda.** Manba: TT v4.0 (loyiha, imzosiz), `erd.md`, `permission-matrix.md`.
 > Phase 2 doirasi: autentifikatsiya/sessiya, foydalanuvchilar, muddatli rollar, tashkiliy tuzilma tarixi, tuzilma o'zgarishi taklifi/tasdig'i, backend ruxsat tekshiruvi, audit skeleti.
 > **Doiradan tashqari:** formalar, natijalar, dalil fayllari, izohlar, analitika, nashr, bildirishnomalar (Phase 3–5).
 > Barcha ma'lumot **sintetik**. Haqiqiy tuzilma/shaxslar (B1–B4) OPEN.
@@ -80,7 +80,7 @@ Django session (DB-backed), `HttpOnly`, `Secure` (staging/prod), `SameSite=Lax`,
 |---|---|---|
 | 2.1 | Custom `User`, login/logout/me, CSRF, throttle, `AuditEvent` skeleti, `policy` moduli bo'sh qobiq. **Migratsiya #1** | Auth testlari, #6–7, #11–12 |
 | 2.2 | `OrganizationUnit/Version` + exclusion constraint, sintetik seed, scope'li o'qish API | #1, #5, #8 |
-| 2.3 | `RoleAssignment`, `SupervisionScope`, admin API, policy to'liq | #2, #4, #5, #6 |
+| 2.3 ✅ | `RoleAssignment`, `SupervisionScope`, admin API, policy to'liq | #2, #4, #5, #6 — o'tdi (128/128) |
 | 2.4 | `OrganizationChangeRequest` + tasdiq + `effective_from` | #3, #10 |
 | 2.5 | To'liq izolyatsiya/concurrency to'plami, `AuditEvent` immutability, Phase 2 hisoboti | #9 va barchasi |
 Frontend login sahifasi 2.1 dan keyin alohida kichik milestone (hozircha backend birinchi).
@@ -97,7 +97,20 @@ Frontend login sahifasi 2.1 dan keyin alohida kichik milestone (hozircha backend
 | P2-7 | Audit o'qish huquqi (rektor?) | Hal qiling yoki Unresolved qoldiring |
 | P2-8 | `org_structure_approver` sintetik rol; haqiqiy shaxs keyinroq (B2) | Ha |
 
+## 6a. Milestone 2.3 da qabul qilingan taxminlar (Proposed, egasi tasdiqlashi kerak)
+| ID | Qaror | Amalga oshirilgan |
+|---|---|---|
+| P2-9 | Prorektor scope'i | Faqat **aniq biriktirilgan** unitlar (ostidagilar avtomatik emas — eng kam imtiyoz). Fakultet + kafedralar kerak bo'lsa, har biri alohida biriktiriladi |
+| P2-10 | Rol ↔ unit turi | `dean` → faqat `faculty`; `unit_head` → `department/office/center`; `approver` → istalgan unit; `rector`, `vice_rector`, `publisher`, `tech_admin`, `org_structure_approver` → unitsiz |
+| P2-11 | Ikki sana | Rol/scope amal qilishi **bugungi** sana bo'yicha; dekanning ostidagi unitlari esa so'rovdagi `as_of` sanasidagi tuzilma bo'yicha |
+| P2-12 | Breadcrumb (P2-3) | Ota unitlar ro'yxat va tafsilotda ko'rinadi, lekin ularning **tarixi** ko'rinmaydi |
+| P2-13 | Publisher | Phase 2 da tuzilmani o'qish huquqi yo'q (Phase 5 da qayta ko'riladi) |
+| P2-14 | Grantlar tarixi | Grant tahrirlanmaydi va o'chirilmaydi: faqat `valid_to` o'rnatiladi yoki qisqartiriladi (DB trigger). API orqali o'tgan sanadan boshlash va orqaga qaytib bekor qilish taqiqlangan. Kelajakdagi grantni bekor qilish = bo'sh oraliq |
+| P2-15 | Bootstrap | Birinchi `tech_admin` faqat CLI orqali: `manage.py assignrole` (`assigned_by` = NULL, audit qilinadi) |
+
 ## 7. Xavflar
+- **Ikki tex. admin o'zaro kelishuvi:** P2-6 faqat o'ziga tayinlashni bloklaydi; A admin B ga rol berishi, B esa A ga rektor rolini berishi mumkin. Har bir grant audit qilinadi; ikki kishilik tasdiq kerakmi — egasi qarori.
+- **Oxirgi tex. adminni bekor qilish:** bloklanmagan; tiklash `assignrole` CLI orqali.
 - Custom `User` modeli **birinchi migratsiyadan oldin** tanlanishi shart; keyin almashtirish og'ir. Shuning uchun P2-1 oldindan hal qilinadi.
 - Unit tuzilmasi haqiqiy reyestrdan farq qilishi mumkin: modeldagi `type` ro'yxati va daraxt chuqurligi B1 javobigacha o'zgarishi mumkin (migratsiya orqali).
 - Rol nomlari (TT 4.2) haqiqiy lavozimlar bilan mos kelmasligi mumkin (B3/B4).

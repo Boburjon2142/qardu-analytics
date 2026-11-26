@@ -4,7 +4,8 @@ import pytest
 from django.core.management import call_command
 from rest_framework.test import APIClient
 
-from apps import policy
+from apps.access.models import Role
+from apps.access.services import assign_role
 from apps.accounts.models import User
 from apps.organization.models import OrganizationUnit
 
@@ -30,8 +31,8 @@ def test_anonymous_is_denied_everywhere(seeded):
         assert client.get(url).status_code in (401, 403)
 
 
-def test_authenticated_user_sees_nothing_until_roles_exist(seeded, authed):
-    """2.2 ships deny-by-default policy; scope rules arrive in 2.3."""
+def test_authenticated_user_without_roles_sees_nothing(seeded, authed):
+    """Deny by default: a user with no active role has no organization scope."""
     assert authed.get("/api/v1/org/units/").json()["results"] == []
     unit = OrganizationUnit.objects.get(code="demo-root")
     assert authed.get(f"/api/v1/org/units/{unit.pk}/").status_code == 404
@@ -44,9 +45,10 @@ def test_invalid_as_of_is_a_400(seeded, authed):
 
 
 @pytest.fixture
-def open_policy(monkeypatch):
-    """Simulate a fully-permitted caller to exercise the data path without roles."""
-    monkeypatch.setattr(policy, "scope_queryset", lambda user, qs: qs)
+def open_policy(seeded, authed):
+    """A rector (whole-tree scope) exercises the data path; scoping is tested in apps.access."""
+    user = User.objects.get(email="u@example.org")
+    assign_role(user=user, role=Role.RECTOR, valid_from=date(2024, 1, 1), backdate_allowed=True)
 
 
 def test_as_of_listing_reflects_history(seeded, authed, open_policy):

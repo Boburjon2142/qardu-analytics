@@ -1,8 +1,9 @@
 # apps/api — Django + DRF
 
-Status: Phase 2.2 (identity foundation + effective-dated organization registry). Custom email-login `User`, DB sessions, CSRF, login
-throttling, append-only `AuditEvent`, deny-by-default `policy` shell. No roles, organization or
-RBAC yet (2.2–2.4).
+Status: Phase 2.3 (identity foundation, effective-dated organization registry, time-bounded roles
+and RBAC). Custom email-login `User`, DB sessions, CSRF, login throttling, append-only `AuditEvent`,
+`RoleAssignment` / `SupervisionScope` (history-guarded), central `apps.policy` with organization
+scope per role. Not yet: organization change requests (2.4), full isolation suite (2.5).
 
 ## Local setup (Windows, Python 3.14)
 ```powershell
@@ -22,6 +23,12 @@ powershell -ExecutionPolicy Bypass -File scripts\dev-db-setup.ps1
 ## Users
 No self-registration and no default accounts. Create one interactively (password prompt, policy
 validated, never an argument): `python manage.py createuser --email a@b.uz --full-name "Name"`.
+
+## Roles (bootstrap)
+The first technical administrator is granted from the command line (audited, no acting user):
+`python manage.py assignrole --email a@b.uz --role tech_admin`. All later grants go through the
+ADMIN API. Unit-bound roles need `--unit <code>`: `dean` (faculty), `unit_head`
+(department/office/center), `approver` (any unit). Nobody can grant a role to themselves.
 
 ## Synthetic demo data
 `python manage.py seed_org_demo` creates a **fictional** 6-unit hierarchy with two dated structural
@@ -43,7 +50,14 @@ $env:DJANGO_SECRET_KEY="x"; .\.venv\Scripts\python manage.py check
 - `POST auth/login/` — `{email, password}`; CSRF + throttled (5/min per account, 30/min per IP).
 - `POST auth/logout/`, `GET auth/me/` — session required.
 - `GET org/units/?as_of=YYYY-MM-DD`, `GET org/units/<id>/`, `GET org/units/<id>/history/` — read-only,
-  scoped through `policy` (deny-all until roles arrive in 2.3, so callers currently see nothing).
+  scoped through `policy`: rector/tech_admin/org_structure_approver see all units; dean — own faculty
+  subtree; vice_rector — assigned units only; unit_head/approver — own unit; plus the ancestor
+  breadcrumb (history only within scope). Out-of-scope units are 404.
+- `GET access/me/` — the caller's own active roles and supervised units.
+- `GET|POST access/role-assignments/`, `POST access/role-assignments/<id>/revoke/`,
+  `GET|POST access/supervision-scopes/`, `POST access/supervision-scopes/<id>/revoke/` —
+  tech_admin only (others 403, denied writes audited). Filters: `?user=<id>&active_on=YYYY-MM-DD`.
+  Grants cannot be edited or deleted; revoke sets `valid_to` (default today, never retroactive).
 - `GET health/` — liveness, no DB.
 - `GET health/ready/` — PostgreSQL reachability (503 without details on failure).
 - `GET version/` — API and app version.
