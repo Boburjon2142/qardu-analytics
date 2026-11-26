@@ -1,15 +1,29 @@
 [Unit]
 Description=QarDU Analytics API (gunicorn)
 After=network.target postgresql.service
+Wants=postgresql.service
 
 [Service]
 User=qardu
 Group=qardu
-WorkingDirectory=/var/www/qardu/api
-EnvironmentFile=/var/www/qardu/api.env
-ExecStart=/var/www/qardu/api/.venv/bin/python -m gunicorn config.wsgi:application --bind 127.0.0.1:8100 --workers 2
+# `current` is a symlink to the active release (see deploy/scripts/deploy.sh).
+WorkingDirectory=/var/www/qardu/current/api
+EnvironmentFile=/etc/qardu/api.env
+ExecStart=/var/www/qardu/current/api/.venv/bin/gunicorn config.wsgi:application \
+    --bind 127.0.0.1:8100 --workers 3 --timeout 30 --graceful-timeout 20 \
+    --worker-tmp-dir /dev/shm --access-logfile - --error-logfile -
+ExecReload=/bin/kill -s HUP $MAINPID
 Restart=always
 RestartSec=3
+
+# Hardening: the service can read its release but not change the system or the code.
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+ProtectHome=true
+ProtectKernelTunables=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
 
 [Install]
 WantedBy=multi-user.target
