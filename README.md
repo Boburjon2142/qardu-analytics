@@ -2,8 +2,8 @@
 
 **Qarshi davlat universiteti faoliyat natijalarini yig‘ish, tasdiqlash, tarixiy saqlash va tahlil qilish uchun axborot-analitik platforma.**
 
-> **Loyiha holati:** Phase 0a (arxitektura hujjatlari). Repozitoriyda faqat **Public Dashboard prototipi** (Next.js, **mock ma'lumotlar bilan**) mavjud. Backend, ma'lumotlar bazasi, autentifikatsiya, ADMIN va PRIVATE qismlari **hali yaratilmagan**. README'ning qolgan qismi rejalashtirilgan tizimni tavsiflaydi va u hozir ishlayotganini anglatmaydi.  
-> **Arxitektura hujjatlari:** [`docs/architecture/`](./docs/architecture/phase-0.md) (barchasi *Proposed*, tasdiqlanmagan).  
+> **Loyiha holati (2026-11-26, tekshirilgan):** **Phase 2 — Identity + M01** bosqichma-bosqich amalga oshirilmoqda. Mavjud: `apps/web` — Public Dashboard prototipi (Next.js, **faqat mock ma'lumot**, API'ga ulanmagan); `apps/api` — Django + DRF backend (autentifikatsiya, sessiya, audit jurnali, tashkiliy tuzilma tarixi, muddatli rollar va RBAC). ADMIN/PRIVATE interfeysi, formalar, natijalar, analitika va PUBLIC nashr **hali yaratilmagan**. README'ning §1–5 bo'limlari rejalashtirilgan tizimni tavsiflaydi va u to'liq ishlayotganini anglatmaydi.  
+> **Arxitektura hujjatlari:** [`docs/architecture/`](./docs/architecture/phase-0.md) (*Proposed*, tasdiqlangan qarorlar alohida belgilangan); joriy bosqich — [`phase-2-plan.md`](./docs/architecture/phase-2-plan.md).  
 > **Asos:** *QarDU Analytics — Texnik topshiriq (TT) v4.0*, 17.11.2026, **rasmiy tasdiqlash uchun loyiha**.  
 > **Muhandislik qoidalari:** [`CLAUDE.md`](./CLAUDE.md).
 
@@ -81,7 +81,12 @@ Ruxsat nazorati **RBAC + organizational scope + object-level permissions + confi
 | Asinxron vazifalar | Zaruratga qarab Redis/Celery (email, fayl tekshiruvi, eksport) |
 | Infrastruktura | Docker, Nginx, staging, CI/CD, monitoring va rollback |
 
-**Haqiqatda mavjud (verified):** Next.js ^15.1.7, React ^19, TypeScript, Tailwind ^3.4, TanStack Query/Table, Recharts, Vitest, Playwright (`package.json`). shadcn/ui hali o‘rnatilmagan. Django, PostgreSQL, Redis/Celery, Docker, Nginx va CI **mavjud emas**.
+**Haqiqatda mavjud (verified, 2026-11-26):**
+- Frontend: Next.js ^15.1.7, React ^19, TypeScript, Tailwind ^3.4, TanStack Query/Table, Recharts, Vitest, Playwright. shadcn/ui o‘rnatilmagan.
+- Backend: Python 3.14, Django 6.1, Django REST Framework 3.18, psycopg 3, pytest, ruff (`apps/api/requirements/`).
+- Ma’lumotlar bazasi: lokal PostgreSQL 16 (CI’da PostgreSQL 18).
+- CI: GitHub Actions (`.github/workflows/ci.yml`). Deploy shablonlari: `deploy/` (Nginx, systemd, env namunasi).
+- **Mavjud emas:** Docker, Redis/Celery, shadcn/ui, production muhiti.
 
 **Qabul qilingan qaror:** autentifikatsiya — Django session (HttpOnly/Secure/SameSite cookie + CSRF). Boshqa versiyalar, hosting va monorepo konfiguratsiyasi: [`docs/architecture/architecture-decisions.md`](./docs/architecture/architecture-decisions.md).
 
@@ -93,39 +98,69 @@ Ruxsat nazorati **RBAC + organizational scope + object-level permissions + confi
 .
 ├── CLAUDE.md                 # Claude Code uchun doimiy qoidalar
 ├── README.md
+├── apps/
+│   ├── web/                  # Next.js: src/ (app, components, features, data/mocks, styles, test), e2e/, public/assets/
+│   └── api/                  # Django + DRF: config/ (settings: base, local, test), apps/ (accounts, audit,
+│                             #   access, core, organization, policy), requirements/, scripts/dev-db-setup.ps1
+├── deploy/                   # Nginx, systemd unitlari, api.env.example (shablonlar)
 ├── docs/
 │   ├── specification/        # TT v4.0 (.docx)
-│   ├── architecture/         # Phase 0 hujjatlari (Proposed)
+│   ├── architecture/         # Phase 0/2 hujjatlari, ERD, ruxsat matritsasi
 │   └── design/               # Joriy dizayn tizimi (DRAFT)
-├── apps/web/src/             # Next.js ilova (app/, components/, features/, data/mocks/, styles/, test/)
-├── apps/web/e2e/             # Playwright testlari
 ├── design-baseline/draft/    # DRAFT skrinshotlar (tasdiqlanmagan, faqat ma'lumotnoma)
-├── public/assets/            # Logotiplar
 ├── .agent/                   # Dizayn workflow ko'rsatmalari
-└── package.json, next.config.mjs, tailwind.config.ts, vitest.config.ts, playwright.config.ts
+└── .github/workflows/ci.yml  # web va api tekshiruvlari
 ```
 
 ### Rejalashtirilgan (Proposed, hali yaratilmagan)
 
-`apps/web` (mavjud frontend 2026-11-21 da shu yerga ko‘chirildi), `apps/api` (Django/DRF), `packages/design-tokens`, `infra/` (Docker/Nginx/CI). To‘liq: [`docs/architecture/phase-0.md`](./docs/architecture/phase-0.md).
+`apps/api/apps/` ichida keyingi fazalar modullari (forms, results, approvals, comments, analytics, publications, notifications, files), `infra/` (Docker). To‘liq: [`docs/architecture/phase-0.md`](./docs/architecture/phase-0.md).
 
 ## 8. Ishlab chiqish yo‘l xaritasi
 
 | Bosqich | Yakuniy natija | Holat |
 | --- | --- | --- |
-| **Phase 0** | TT gap-analysis; arxitektura, ERD, permission matrix, ADR, MVP backlog | Phase 0a hujjatlari tayyor (tasdiq kutilmoqda) |
-| **Phase 1** | Repo scaffold, sifat tekshiruvlari, lokal Docker/PostgreSQL, bazaviy CI | Rejada |
-| **Phase 2** | Authentication/RBAC va M01; tuzilma tarixini tasdiqlash | Rejada |
+| **Phase 0** | TT gap-analysis; arxitektura, ERD, permission matrix, ADR, MVP backlog | Bajarilgan (hujjatlar Proposed, asosiy qarorlar 2026-11-21 da tasdiqlangan) |
+| **Phase 1** | Repo scaffold, sifat tekshiruvlari, lokal PostgreSQL, bazaviy CI | Bajarilgan (Docker hali yo‘q) |
+| **Phase 2** | Authentication/RBAC va M01; tuzilma tarixini tasdiqlash | Jarayonda: 2.1, 2.2, 2.3 bajarilgan; 2.4–2.5 qolgan ([reja](./docs/architecture/phase-2-plan.md)) |
 | **Phase 3** | CUSTOM formalar, natija/reviziya, dalil, approval va audit | Rejada |
 | **Phase 4** | M02/M04/M05, metrikaning to‘g‘ri agregatsiyasi va dashboardlar | Rejada |
 | **Phase 5** | Maxfiy izohlar, bildirishnomalar, Publisher va PUBLIC snapshotlar | Rejada |
 | **Phase 6** | E2E, xavfsizlik, accessibility, load test, restore/rollback va pilot | Rejada |
 
-> Har bir bosqichni boshlashdan oldin uning scope’i va qabul mezonlari tasdiqlanadi. Hozir **Phase 0a** yakunlangan; scaffold, dependency o‘rnatish va frontendni ko‘chirish alohida tasdiqni kutadi.
+> Har bir milestone alohida tasdiqlanadi; DB migratsiyasini dev bazaga qo‘llash alohida ruxsat talab qiladi.
 
 ## 9. Lokal ishga tushirish
 
-Faqat mavjud **frontend prototipi** (mock ma'lumot) uchun. `apps/web/package.json` skriptlari (`cd apps/web` dan ishga tushiring): `npm run dev`, `build`, `start`, `lint`, `test` (Vitest), `test:e2e` (Playwright). Ko‘chirishdan keyin `tsc --noEmit`, `vitest run` (20/20) va `next build` o‘tdi; `lint` va Playwright e2e ishga tushirilmagan. Backend, DB va Docker mavjud emas.
+**Talablar:** Node 24, Python 3.14, PostgreSQL 16+ (lokal, `localhost:5432`).
+
+**Backend** (`apps/api`, batafsil: [`apps/api/README.md`](./apps/api/README.md)):
+
+```powershell
+cd apps/api
+py -3.14 -m venv .venv
+.\.venv\Scripts\python -m pip install -r requirements/dev.txt
+copy .env.example .env          # qiymatlarni tahrirlang; .env Git'ga kirmaydi
+powershell -ExecutionPolicy Bypass -File scripts\dev-db-setup.ps1   # dev rol va baza
+.\.venv\Scripts\python manage.py migrate
+.\.venv\Scripts\python manage.py runserver 127.0.0.1:8000
+```
+
+Tekshirish: `http://127.0.0.1:8000/api/v1/health/`, `.../health/ready/`, `.../version/`. Foydalanuvchi: `manage.py createuser --email ... --full-name ...` (parol interaktiv so‘raladi). Birinchi tex. admin: `manage.py assignrole --email ... --role tech_admin`. Sintetik demo tuzilma: `manage.py seed_org_demo`.
+
+**Frontend** (`apps/web`):
+
+```powershell
+cd apps/web
+npm ci
+npm run dev                      # http://localhost:3000
+```
+
+Skriptlar: `dev`, `build`, `start`, `lint`, `test` (Vitest), `test:e2e` (Playwright).
+
+**Oxirgi tekshiruv (2026-11-26):** web — `tsc --noEmit`, `eslint`, `vitest` (32/32) o‘tdi; api — `ruff`, `manage.py check`, `pytest` (128/128, milestone 2.3 bilan) o‘tdi; ikkala server lokalda ishga tushirildi. Playwright e2e ishga tushirilmagan.
+
+**Serverga yuklash (stat.qarshidu.uz):** Nginx + systemd + PostgreSQL, HTTPS (Let's Encrypt) — qadamlar: [`deploy/README.md`](./deploy/README.md).
 
 > Vizual regressiya testi (`apps/web/e2e/visual-regression.spec.ts`) hozir piksel taqqoslamaydi; u dizayn regressiyasi isboti emas.
 
@@ -170,7 +205,7 @@ Yuqoridagi qiymatlar **dastlabki loyiha SLO/qabul maqsadlari**, amaldagi o‘lch
 - **TT v4.0** — funksional talablar va qabul mezonlarining asosiy loyiha manbasi; hujjat hozir rasmiy tasdiqlash bosqichida.
 - **`docs/architecture/`** — arxitektura qarorlari, ERD, ruxsat matritsasi, API kontrakti va ochiq qarorlar (hammasi *Proposed*).
 
-**Keyingi amaliy qadam:** Phase 0 arxitekturasini tayyorlash va tasdiqlash. Hali biror modulni “tayyor” deb belgilash yoki sinovdan o‘tmagan buyruqlarni README’ga qo‘shish mumkin emas.
+**Keyingi amaliy qadam:** Phase 2 milestone’larini ketma-ket yakunlash ([`phase-2-plan.md`](./docs/architecture/phase-2-plan.md) §5). Sinovdan o‘tmagan buyruqlarni README’ga qo‘shmang va modulni testlarsiz “tayyor” deb belgilamang.
 
 ---
 

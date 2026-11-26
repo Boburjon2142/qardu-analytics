@@ -1,13 +1,13 @@
 # Phase 0 — Arxitektura umumiy ko'rinishi
 
-> **Maqom:** PROPOSED (taklif). Hujjatdagi hech narsa hali implementatsiya qilinmagan, faqat §1 "Mavjud holat" bundan mustasno.
+> **Maqom:** PROPOSED (taklif). §1 "Mavjud holat" — tekshirilgan fakt (2026-11-26). Qolgan bo'limlar dastlabki reja; amalga oshirilgan qismlar `phase-2-plan.md` da kuzatiladi.
 > **Manba:** TT v4.0 (17.11.2026, imzolanmagan loyiha), `CLAUDE.md`, Phase 0 audit hisoboti.
 > Belgilar: **Specified** (TT), **Approved** (egasi tasdiqlagan), **Proposed**, **Unresolved**.
 
-## 1. Mavjud holat (verified)
-- `main` branch; Next.js 15 / React 19 / Tailwind 3 Public Dashboard (faqat mock ma'lumot): `src/app/(public)/page.tsx`, `src/features/dashboard/*`, `src/data/mocks/*`.
-- Backend, DB, auth, RBAC, Docker, CI **yo'q**.
-- Mavjud frontend `apps/web` ga ko'chirilishi **2026-11-21 da ko'chirildi** (Approved qaror #2); `design-baseline/` va `.agent/` ildizda qoldi.
+## 1. Mavjud holat (verified, 2026-11-26)
+- `apps/web`: Next.js 15 / React 19 / Tailwind 3 Public Dashboard (faqat mock ma'lumot, API'ga ulanmagan): `src/app/(public)/page.tsx`, `src/features/dashboard/*`, `src/data/mocks/*`. 2026-11-21 da ildizdan ko'chirildi (Approved qaror #2); `design-baseline/` va `.agent/` ildizda qoldi.
+- `apps/api`: Django 6.1 + DRF, PostgreSQL 16 (lokal). Phase 1 (scaffold, health/version, CI) va Phase 2 milestone 2.1 (User, sessiya, CSRF, throttle, append-only audit) hamda 2.2 (effective-dated tashkiliy tuzilma) bajarilgan.
+- CI: GitHub Actions. Deploy shablonlari: `deploy/`. Docker, Redis/Celery **yo'q**.
 
 ## 2. Taklif etilgan monorepo tuzilmasi (Proposed)
 ```text
