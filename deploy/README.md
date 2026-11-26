@@ -4,18 +4,26 @@ Bu qo'llanma QarDU Analytics'ni bitta Ubuntu serverga (Nginx + systemd + Postgre
 yuklash uchun. Barcha buyruqlar serverda `sudo` bilan bajariladi.
 
 ```text
-Internet ──HTTPS──> Nginx :443 ──/api/──> gunicorn (Django)  127.0.0.1:8100 ──> PostgreSQL
-                                 └──/────> Next.js standalone 127.0.0.1:3100
+Internet ──HTTPS──> Kerio Control (213.230.96.104, *.qarshidu.uz sertifikati)
+                      └──HTTP──> Nginx :80 (192.168.240.119) ──/api/──> gunicorn (Django) 127.0.0.1:8100 ──> PostgreSQL
+                                                              └──/────> Next.js standalone 127.0.0.1:3100
 ```
+
+**Universitet tarmog'i (2026-11-26 da tekshirilgan):** TLS'ni universitetning Kerio Control
+reverse proxy'si o'zining `*.qarshidu.uz` sertifikati bilan ochadi va so'rovni ichki serverga
+oddiy HTTP orqali uzatadi (`alumni` va `sdg` ham shunday ishlaydi). Shuning uchun bu serverda
+**Let's Encrypt sertifikati kerak emas** va Nginx 80-portda HTTPS'ga yo'naltirmaydi. Har bir yangi
+domen uchun Kerio administratori reverse-proxy qoidasini qo'shishi kerak:
+`stat.qarshidu.uz` (HTTPS) → `http://192.168.240.119:80`.
 
 | Fayl | Vazifasi |
 |---|---|
 | `scripts/server-setup.sh` | Bir martalik: paketlar, `qardu` foydalanuvchisi, kataloglar, DB roli va bazasi, systemd |
-| `scripts/obtain-cert.sh` | Let's Encrypt sertifikati va to'liq Nginx sayti |
+| `scripts/obtain-cert.sh` | Let's Encrypt sertifikati — **faqat** TLS'ni server o'zi ochadigan muhitda (Kerio ortida kerak emas) |
 | `scripts/deploy.sh` | Har bir yangilanish: build, tekshiruv, backup, migratsiya, almashtirish, health-check |
 | `scripts/rollback.sh` | Oldingi relizga qaytish (faqat kod) |
 | `scripts/manage.sh` | Serverda `manage.py` buyruqlari (foydalanuvchi yaratish, rol berish) |
-| `nginx/stat.qarshidu.uz.conf` | HTTPS, xavfsizlik sarlavhalari, login rate-limit |
+| `nginx/stat.qarshidu.uz.conf` | Kerio ortidagi 80-port sayti: xavfsizlik sarlavhalari, real IP, login rate-limit |
 | `systemd/*.service` | API va web xizmatlari |
 | `api.env.example` | `/etc/qardu/api.env` namunasi (sirlarsiz) |
 
@@ -55,8 +63,10 @@ sudo nano /etc/qardu/api.env
 # 4) Qayta ishga tushirish: DB roli/bazasi va systemd xizmatlari yaratiladi
 sudo bash deploy/scripts/server-setup.sh
 
-# 5) HTTPS sertifikati (email — sertifikat muddati haqida xabar olish uchun)
-sudo bash deploy/scripts/obtain-cert.sh <admin-email>
+# 5) Nginx sayti (Kerio ortida: sertifikat kerak emas)
+sudo install -m 644 deploy/nginx/stat.qarshidu.uz.conf /etc/nginx/sites-available/
+sudo ln -sfn /etc/nginx/sites-available/stat.qarshidu.uz.conf /etc/nginx/sites-enabled/
+sudo nginx -t && sudo systemctl reload nginx
 
 # 6) Birinchi reliz
 sudo bash deploy/scripts/deploy.sh
@@ -84,7 +94,7 @@ curl -fsS https://stat.qarshidu.uz/api/v1/health/ready/  # DB bilan aloqa
 curl -fsS https://stat.qarshidu.uz/api/v1/version/
 curl -sI  https://stat.qarshidu.uz/ | grep -iE 'strict-transport|content-security'
 systemctl status qardu-api qardu-web --no-pager
-sudo certbot renew --dry-run
+tail -n 5 /var/log/nginx/access.log   # tashqi so'rovlarda mijozning haqiqiy IP'si ko'rinishi kerak
 ```
 
 ## 3. Yangilash va orqaga qaytish
