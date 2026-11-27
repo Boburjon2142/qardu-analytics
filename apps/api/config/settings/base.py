@@ -87,8 +87,20 @@ CSRF_COOKIE_SAMESITE = "Lax"
 CSRF_COOKIE_SECURE = env_bool("DJANGO_COOKIE_SECURE", not DEBUG)
 CSRF_FAILURE_VIEW = "apps.core.views.csrf_failure"
 
+# Login throttle counters must be shared by every gunicorn worker and survive restarts, so the
+# cache lives in PostgreSQL (no extra service). The table is created by apps/core migration 0001.
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.db.DatabaseCache",
+        "LOCATION": "qardu_cache",
+        "OPTIONS": {"MAX_ENTRIES": 10000},
+    }
+}
+
 LANGUAGE_CODE = "en-us"
-TIME_ZONE = "UTC"
+# The university's calendar day: role validity, `as_of` defaults and effective dates all use
+# timezone.localdate(). Timestamps are still stored in UTC (USE_TZ).
+TIME_ZONE = "Asia/Tashkent"
 USE_TZ = True
 
 REST_FRAMEWORK = {

@@ -12,5 +12,5 @@ DEBUG = False
 ALLOWED_HOSTS = ["testserver"]
 # Fast hasher for tests only; production keeps Django's default (PBKDF2).
 PASSWORD_HASHERS = ["django.contrib.auth.hashers.MD5PasswordHasher"]
-# Cache-backed throttles must not leak between tests.
-CACHES = {"default": {"BACKEND": "django.core.cache.backends.locmem.LocMemCache"}}
+# Tests use the same DatabaseCache as production (base.py). Throttle state does not leak between
+# tests: the autouse `_clear_cache` fixtures clear it and each test's transaction is rolled back.
